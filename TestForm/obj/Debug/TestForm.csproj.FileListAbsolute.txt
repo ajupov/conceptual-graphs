@@ -1,0 +1,16 @@
+C:\Projects\Diagram.NET\TestForm\obj\Debug\TestForm.csprojResolveAssemblyReference.cache
+C:\Projects\Diagram.NET\TestForm\obj\Debug\Elan.TestForm.About.resources
+C:\Projects\Diagram.NET\TestForm\obj\Debug\TestForm.DocumentListForm.resources
+C:\Projects\Diagram.NET\TestForm\obj\Debug\TestForm.csproj.GenerateResource.Cache
+C:\Projects\Diagram.NET\TestForm\bin\Debug\TestForm.exe.config
+C:\Projects\Diagram.NET\TestForm\bin\Debug\TestForm.exe
+C:\Projects\Diagram.NET\TestForm\bin\Debug\TestForm.pdb
+C:\Projects\Diagram.NET\TestForm\bin\Debug\Dapper.dll
+C:\Projects\Diagram.NET\TestForm\bin\Debug\Microsoft.Data.ConnectionUI.Dialog.dll
+C:\Projects\Diagram.NET\TestForm\bin\Debug\Microsoft.Data.ConnectionUI.dll
+C:\Projects\Diagram.NET\TestForm\bin\Debug\Elan.pdb
+C:\Projects\Diagram.NET\TestForm\bin\Debug\Dapper.xml
+C:\Projects\Diagram.NET\TestForm\obj\Debug\TestForm.exe
+C:\Projects\Diagram.NET\TestForm\obj\Debug\TestForm.pdb
+C:\Projects\Diagram.NET\TestForm\bin\Debug\Elan.exe
+C:\Projects\Diagram.NET\TestForm\obj\Debug\Elan.TestForm.MainForm.resources
