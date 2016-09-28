@@ -22,6 +22,7 @@ namespace Elan.Forms
             if (openFileDialog.ShowDialog(this) == DialogResult.OK)
             {
                 designer.OpenFile(openFileDialog.FileName);
+                CurrentFileName = openFileDialog.FileName;
             }
         }
         private void SaveFileMenuItemClick(object sender, EventArgs e)

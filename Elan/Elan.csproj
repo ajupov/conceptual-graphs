@@ -100,6 +100,10 @@
       <HintPath>..\packages\DataConnectionDialog.1.2\lib\Microsoft.Data.ConnectionUI.Dialog.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System">
       <Name>System</Name>
     </Reference>
@@ -163,6 +167,7 @@
     <Compile Include="Models\Domain\Node.cs" />
     <Compile Include="Models\Implementations\Others\DbSettings.cs" />
     <Compile Include="Services\DataBaseManager.cs" />
+    <Compile Include="Services\FileManager.cs" />
     <Compile Include="Services\SettingsManager.cs" />
     <Compile Include="UserControls\Designer.cs">
       <SubType>UserControl</SubType>

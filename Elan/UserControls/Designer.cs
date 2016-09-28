@@ -2,7 +2,6 @@ using System;
 using System.ComponentModel;
 using System.Drawing;
 using System.IO;
-using System.Linq;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Windows.Forms;
@@ -19,6 +18,7 @@ using Elan.Models.Implementations.Elements;
 using Elan.Models.Implementations.Nodes;
 using Elan.Services;
 using Document = Elan.Models.Implementations.Containers.Document;
+using DomainDocument = Elan.Models.Domain.Document;
 
 namespace Elan.UserControls
 {
@@ -80,6 +80,7 @@ namespace Elan.UserControls
                     (int) ((Document.Location.Y + Document.Size.Height)*Document.Zoom));
             }
         }
+
         private void Invalidate(BaseElement element, bool force = false)
         {
             if (element == null)
@@ -754,20 +755,15 @@ namespace Elan.UserControls
 
         public void SaveFile(string fileName)
         {
-            var formatter = new BinaryFormatter();
-            var stream = new FileStream(fileName, FileMode.Create, FileAccess.Write, FileShare.None);
-            formatter.Serialize(stream, Document);
-            stream.Close();
+            FileManager.Save(fileName, Document.GetDocument());
         }
 
         public void OpenFile(string fileName)
         {
-            IFormatter formatter = new BinaryFormatter();
-            using (var stream = new FileStream(fileName, FileMode.Open, FileAccess.Read, FileShare.Read))
-            {
-                Document = (Document) formatter.Deserialize(stream);
-            }
-
+            var document = FileManager.Open(fileName);
+            CreateDocument(document);
+            RestartInitValues();
+            base.Invalidate();
             Document.SetCurrentId();
             RecreateEventsHandlers();
         }
@@ -807,70 +803,75 @@ namespace Elan.UserControls
                 var documentId = form.SelectedDocumentId;
                 var domainDocument = DataBaseManager.GetDocumentById(documentId);
 
-                Document = new Document
-                {
-                    Id = domainDocument.Id,
-                    Name = domainDocument.Name,
-                    WindowSize = Size
-                };
-
-                foreach (var node in domainDocument.Nodes)
-                {
-                    var rectangle = new Rectangle(node.X, node.Y, node.Width, node.Height);
-
-                    switch (node.Type)
-                    {
-                        case NodeType.Concept:
-                            var rectangleNode = new RectangleNode(rectangle)
-                            { Id = node.Id, Label = new LabelElement { Text = node.Label } };
-                            rectangleNode.Label.PositionBySite(rectangleNode);
-                            Document.AddElement(rectangleNode);
-                            break;
-                        case NodeType.Relation:
-                            var ellipseNode = new EllipseNode(rectangle)
-                            { Id = node.Id, Label = new LabelElement { Text = node.Label } };
-                            ellipseNode.Label.PositionBySite(ellipseNode);
-                            Document.AddElement(ellipseNode);
-                            break;
-                        case NodeType.Comment:
-                            var commentBoxElement = new CommentBoxElement(rectangle)
-                            { Id = node.Id, Label = new LabelElement { Text = node.Label } };
-                            commentBoxElement.Label.PositionBySite(commentBoxElement);
-                            Document.AddElement(commentBoxElement);
-                            break;
-                    }
-                }
-
-                foreach (var link in domainDocument.Links)
-                {
-                    var startConnectorElement =
-                        (ConnectorElement) Document.FindElement(new Point(link.StartPointX, link.StartPointY));
-
-                    var endConnectorElement =
-                            (ConnectorElement)Document.FindElement(new Point(link.EndPointX, link.EndPointY));
-
-                    if (startConnectorElement != null && endConnectorElement != null)
-                    {
-                        var linkElement = new StraightLinkElement(startConnectorElement, endConnectorElement)
-                        {
-                            Id = link.Id,
-                            Label = new LabelElement
-                            {
-                                Text = link.Label
-                            }
-                        };
-                        linkElement.Label.Size = EditLabelAction.GetTextSize(linkElement);
-                        linkElement.Label.PositionBySite(linkElement);
-                        Document.Elements.Add(linkElement);
-                    }
-                }
-
-                Document.SetCurrentId();
-                RecreateEventsHandlers();
+                CreateDocument(domainDocument);
             }
 
             RestartInitValues();
             base.Invalidate();
+        }
+
+        public void CreateDocument(DomainDocument domainDocument)
+        {
+            Document = new Document
+            {
+                Id = domainDocument.Id,
+                Name = domainDocument.Name,
+                WindowSize = Size
+            };
+
+            foreach (var node in domainDocument.Nodes)
+            {
+                var rectangle = new Rectangle(node.X, node.Y, node.Width, node.Height);
+
+                switch (node.Type)
+                {
+                    case NodeType.Concept:
+                        var rectangleNode = new RectangleNode(rectangle)
+                        {Id = node.Id, Label = new LabelElement {Text = node.Label}};
+                        rectangleNode.Label.PositionBySite(rectangleNode);
+                        Document.AddElement(rectangleNode);
+                        break;
+                    case NodeType.Relation:
+                        var ellipseNode = new EllipseNode(rectangle)
+                        {Id = node.Id, Label = new LabelElement {Text = node.Label}};
+                        ellipseNode.Label.PositionBySite(ellipseNode);
+                        Document.AddElement(ellipseNode);
+                        break;
+                    case NodeType.Comment:
+                        var commentBoxElement = new CommentBoxElement(rectangle)
+                        {Id = node.Id, Label = new LabelElement {Text = node.Label}};
+                        commentBoxElement.Label.PositionBySite(commentBoxElement);
+                        Document.AddElement(commentBoxElement);
+                        break;
+                }
+            }
+
+            foreach (var link in domainDocument.Links)
+            {
+                var startConnectorElement =
+                    (ConnectorElement) Document.FindElement(new Point(link.StartPointX, link.StartPointY));
+
+                var endConnectorElement =
+                    (ConnectorElement) Document.FindElement(new Point(link.EndPointX, link.EndPointY));
+
+                if (startConnectorElement != null && endConnectorElement != null)
+                {
+                    var linkElement = new StraightLinkElement(startConnectorElement, endConnectorElement)
+                    {
+                        Id = link.Id,
+                        Label = new LabelElement
+                        {
+                            Text = link.Label
+                        }
+                    };
+                    linkElement.Label.Size = EditLabelAction.GetTextSize(linkElement);
+                    linkElement.Label.PositionBySite(linkElement);
+                    Document.Elements.Add(linkElement);
+                }
+            }
+
+            Document.SetCurrentId();
+            RecreateEventsHandlers();
         }
 
         #endregion
@@ -935,7 +936,7 @@ namespace Elan.UserControls
             RestartInitValues();
         }
 
-        private void RestartInitValues()
+        public void RestartInitValues()
         {
             // Reinitialize status
             _moveAction = null;

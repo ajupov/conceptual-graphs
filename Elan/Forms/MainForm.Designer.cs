@@ -437,8 +437,12 @@ namespace Elan.Forms
             // 
             // openFileDialog
             // 
-            this.openFileDialog.DefaultExt = "*.dgn";
+            this.openFileDialog.Filter = "Граф Elan (*.json)|*.json|Все файлы (*.*)|*.*";
             this.openFileDialog.RestoreDirectory = true;
+            // 
+            // saveFileDialog
+            // 
+            this.saveFileDialog.Filter = "Граф Elan (*.json)|*.json|Все файлы (*.*)|*.*";
             // 
             // MainForm
             // 

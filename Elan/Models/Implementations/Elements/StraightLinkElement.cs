@@ -57,7 +57,8 @@ namespace Elan.Models.Implementations.Elements
 
         [NonSerialized]
         private LineController _controller;
-        
+
+        [Browsable(false)]
         public virtual LabelElement Label
         {
             get { return label; }

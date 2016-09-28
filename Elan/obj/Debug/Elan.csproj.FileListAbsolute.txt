@@ -27,3 +27,5 @@ C:\Projects\Diagram.NET\Elan\obj\Debug\Elan.csproj.GenerateResource.Cache
 C:\Projects\Diagram.NET\Elan\obj\Debug\Elan.exe
 C:\Projects\Diagram.NET\Elan\obj\Debug\Elan.pdb
 C:\Projects\Diagram.NET\Elan\obj\Debug\Elan.csprojResolveAssemblyReference.cache
+C:\Projects\Diagram.NET\Elan\bin\Debug\Newtonsoft.Json.dll
+C:\Projects\Diagram.NET\Elan\bin\Debug\Newtonsoft.Json.xml
