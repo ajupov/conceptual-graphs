@@ -11,6 +11,7 @@ namespace Elan.Helpers
             var controllable = element as IControllable;
             return controllable?.GetController() as IMoveController;
         }
+
         public static ILabelController GetLabelController(BaseElement element)
         {
             var controllable = element as IControllable;

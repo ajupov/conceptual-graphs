@@ -1,7 +1,5 @@
 ﻿select
 	Id,
-	Name,
-	Width,
-	Height
+	Name
 	from dbo.Document
 	where Id = @id

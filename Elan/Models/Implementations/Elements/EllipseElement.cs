@@ -12,6 +12,7 @@ namespace Elan.Models.Implementations.Elements
             : base(rectangle)
         {
         }
+
         public EllipseElement(int top, int left, int width, int height)
             : base(top, left, width, height)
         {

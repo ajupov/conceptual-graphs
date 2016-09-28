@@ -22,6 +22,7 @@ namespace Elan.Services
                 }
             }
         }
+
         public static DbSettings LoadDbSettings()
         {
             var dbSettings = new DbSettings();
@@ -29,6 +30,7 @@ namespace Elan.Services
             dbSettings.ConnectionString = FormatSetting(lines, ConnectionStringPattern);
             return dbSettings;
         }
+
         public static void ReplaceDefaultDbName()
         {
             const char delimiter = ';';
@@ -40,6 +42,7 @@ namespace Elan.Services
             dbSettings.ConnectionString = string.Join(delimiter.ToString(), newSplitSettings);
             SaveDbSettings(dbSettings);
         }
+
         private static string FormatSetting(IEnumerable<string> settingLines, string settingName)
         {
             return settingLines.LastOrDefault(l => l.StartsWith(settingName))

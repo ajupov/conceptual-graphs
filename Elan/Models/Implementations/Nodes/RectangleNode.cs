@@ -15,7 +15,15 @@ namespace Elan.Models.Implementations.Nodes
             : base(rectangle.Location.X, rectangle.Location.Y, rectangle.Size.Width, rectangle.Size.Height)
         {
             _rectangle = new RectangleElement(rectangle.Location.X, rectangle.Location.Y, rectangle.Size.Width, rectangle.Size.Height);
-            SyncConstructors();
+            location = _rectangle.Location;
+            size = _rectangle.Size;
+            borderWidth = _rectangle.BorderWidth;
+            _label = new LabelElement();
+        }
+
+        public IController GetController()
+        {
+            return _controller ?? (_controller = new RectangleController(this));
         }
 
         public override Point Location
@@ -27,6 +35,7 @@ namespace Elan.Models.Implementations.Nodes
                 base.Location = value;
             }
         }
+
         public override Size Size
         {
             get { return base.Size; }
@@ -48,7 +57,8 @@ namespace Elan.Models.Implementations.Nodes
             }
         }
 
-        private LabelElement _label = new LabelElement();
+        private LabelElement _label;
+
         private readonly RectangleElement _rectangle;
 
         [NonSerialized]
@@ -58,16 +68,6 @@ namespace Elan.Models.Implementations.Nodes
         {
             IsInvalidated = false;
             _rectangle.Draw(graphics);
-        }
-        private void SyncConstructors()
-        {
-            location = _rectangle.Location;
-            size = _rectangle.Size;
-            borderWidth = _rectangle.BorderWidth;
-        }
-        IController IControllable.GetController()
-        {
-            return _controller ?? (_controller = new RectangleController(this));
         }
     }
 }

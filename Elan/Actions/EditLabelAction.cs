@@ -10,15 +10,16 @@ namespace Elan.Actions
 {
     public class EditLabelAction
     {
-        #region Ñגמיסעגא
         private Point _center;
-        private LabelEditDirection _direction;
-        private LabelElement _labelElement;
-        private TextBox _labelTextBox;
-        private BaseElement _siteLabelElement;
-        #endregion
 
-        #region Ìועמהû
+        private BaseElement _siteLabelElement;
+
+        private LabelEditDirection _direction;
+
+        private LabelElement _labelElement;
+
+        private TextBox _labelTextBox;
+
         public void StartEdit(BaseElement element, TextBox textBox)
         {
             if (!(element is ILabelElement) || ((ILabelElement)element).Label.ReadOnly)
@@ -60,6 +61,7 @@ namespace Elan.Actions
             _center.X = textBox.Location.X + textBox.Size.Width/2;
             _center.Y = textBox.Location.Y + textBox.Size.Height/2;
         }
+
         public void EndEdit()
         {
             if (_siteLabelElement == null)
@@ -69,18 +71,20 @@ namespace Elan.Actions
 
             _labelTextBox.KeyPress -= LabelTextBoxKeyPress;
 
-            var lblCtrl = ControllerHelper.GetLabelController(_siteLabelElement);
+            var controller = ControllerHelper.GetLabelController(_siteLabelElement);
             _labelElement.Size = MeasureTextSize();
             _labelElement.Text = _labelTextBox.Text;
             _labelTextBox.Hide();
-            if (lblCtrl != null)
+
+            if (controller != null)
             {
-                lblCtrl.SetLabelPosition();
+                controller.SetLabelPosition();
             }
             else
             {
                 _labelElement.PositionBySite(_siteLabelElement);
             }
+
             _labelElement.Invalidate();
             _siteLabelElement = null;
             _labelElement = null;
@@ -94,19 +98,19 @@ namespace Elan.Actions
                 return;
             }
 
-            var lab = ((ILabelElement) element).Label;
+            var label = ((ILabelElement) element).Label;
 
             element.Invalidate();
-            lab.Invalidate();
+            label.Invalidate();
 
-            if (lab.Text.Length > 0)
+            if (label.Text.Length > 0)
             {
-                textBox.Location = lab.Location;
-                textBox.Size = lab.Size;
+                textBox.Location = label.Location;
+                textBox.Size = label.Size;
             }
             else
             {
-                var sizeTmp = DiagramHelper.MeasureString("XXXXXXX", lab.Font, lab.Size.Width, lab.Format);
+                var sizeTmp = DiagramHelper.MeasureString("XXXXXXX", label.Font, label.Size.Width, label.Format);
 
                 if (element is BaseLinkElement)
                 {
@@ -150,6 +154,28 @@ namespace Elan.Actions
             return sizeTmp;
         }
 
+        public static Size GetTextSize(BaseElement element)
+        {
+            var sizeTmp = Size.Empty;
+            var direction = element is BaseLinkElement ? LabelEditDirection.Both : LabelEditDirection.UpDown;
+            var labelElement = ((ILabelElement)element).Label;
+
+            switch (direction)
+            {
+                case LabelEditDirection.UpDown:
+                    sizeTmp = DiagramHelper.MeasureString(labelElement.Text, labelElement.Font, labelElement.Size.Width,
+                        labelElement.Format);
+                    break;
+                case LabelEditDirection.Both:
+                    sizeTmp = DiagramHelper.MeasureString(labelElement.Text, labelElement.Font);
+                    break;
+            }
+
+            sizeTmp.Height += 30;
+
+            return sizeTmp;
+        }
+
         private void LabelTextBoxKeyPress(object sender, KeyPressEventArgs e)
         {
             if (_labelTextBox.Text.Length == 0)
@@ -174,6 +200,5 @@ namespace Elan.Actions
 
             _labelTextBox.Location = new Point(_center.X - size.Width/2, _center.Y - size.Height/2);
         }
-        #endregion
     }
 }

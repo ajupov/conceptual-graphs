@@ -51,6 +51,7 @@ namespace Elan.Models.Implementations.Nodes
                 base.BorderWidth = value;
             }
         }
+
         [Browsable(false)]
         public virtual LabelElement Label
         {

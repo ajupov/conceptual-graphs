@@ -15,7 +15,6 @@ using Elan.Forms;
 using Elan.Helpers;
 using Elan.Models.Base;
 using Elan.Models.Contracts;
-using Elan.Models.Implementations.Collections;
 using Elan.Models.Implementations.Elements;
 using Elan.Models.Implementations.Nodes;
 using Elan.Services;
@@ -421,14 +420,17 @@ namespace Elan.UserControls
                     _selectedElement = Document.FindElement(dragPoint);
                     if (_selectedElement is ConnectorElement
                         && Document.CanAddLink(_connStart, (ConnectorElement) _selectedElement))
+                    {
                         _linkLine.Connector2 = (ConnectorElement) _selectedElement;
+                    }
                     else
+                    {
                         _linkLine.Connector2 = _connEnd;
+                    }
 
-                    var ctrl = (IMoveController) ((IControllable) _connEnd).GetController();
-                    ctrl.Move(dragPoint);
-
-                    //this.Invalidate(linkLine, true); //TODO
+                    var moveController = (IMoveController) ((IControllable) _connEnd).GetController();
+                    moveController.Move(dragPoint);
+                    
                     base.Invalidate();
                 }
             }
@@ -809,7 +811,7 @@ namespace Elan.UserControls
                 {
                     Id = domainDocument.Id,
                     Name = domainDocument.Name,
-                    WindowSize = new Size(domainDocument.Width, domainDocument.Height)
+                    WindowSize = Size
                 };
 
                 foreach (var node in domainDocument.Nodes)
@@ -819,56 +821,56 @@ namespace Elan.UserControls
                     switch (node.Type)
                     {
                         case NodeType.Concept:
-                            Document.Elements.Add(new RectangleNode(rectangle)
-                            {
-                                Id = node.Id,
-                                Label = new LabelElement
-                                {
-                                    Text = node.Label
-                                }
-                            });
+                            var rectangleNode = new RectangleNode(rectangle)
+                            { Id = node.Id, Label = new LabelElement { Text = node.Label } };
+                            rectangleNode.Label.PositionBySite(rectangleNode);
+                            Document.AddElement(rectangleNode);
                             break;
                         case NodeType.Relation:
-                            Document.Elements.Add(new EllipseNode(rectangle)
-                            {
-                                Id = node.Id,
-                                Label = new LabelElement
-                                {
-                                    Text = node.Label
-                                }
-                            });
+                            var ellipseNode = new EllipseNode(rectangle)
+                            { Id = node.Id, Label = new LabelElement { Text = node.Label } };
+                            ellipseNode.Label.PositionBySite(ellipseNode);
+                            Document.AddElement(ellipseNode);
                             break;
                         case NodeType.Comment:
-                            Document.Elements.Add(new CommentBoxElement(rectangle)
-                            {
-                                Id = node.Id,
-                                Label = new LabelElement
-                                {
-                                    Text = node.Label
-                                }
-                            });
+                            var commentBoxElement = new CommentBoxElement(rectangle)
+                            { Id = node.Id, Label = new LabelElement { Text = node.Label } };
+                            commentBoxElement.Label.PositionBySite(commentBoxElement);
+                            Document.AddElement(commentBoxElement);
                             break;
                     }
                 }
 
                 foreach (var link in domainDocument.Links)
                 {
-                    var startElement = (ConnectorElement) Document.Elements.GetArray().FirstOrDefault(e => e.Id == link.StartNodeId);
-                    var endElement = (ConnectorElement) Document.Elements.GetArray().FirstOrDefault(e => e.Id == link.EndNodeId);
-                    var linElement = new StraightLinkElement(startElement, endElement)
+                    var startConnectorElement =
+                        (ConnectorElement) Document.FindElement(new Point(link.StartPointX, link.StartPointY));
+
+                    var endConnectorElement =
+                            (ConnectorElement)Document.FindElement(new Point(link.EndPointX, link.EndPointY));
+
+                    if (startConnectorElement != null && endConnectorElement != null)
                     {
-                        Id = link.Id,
-                        Label = new LabelElement
+                        var linkElement = new StraightLinkElement(startConnectorElement, endConnectorElement)
                         {
-                            Text = link.Label
-                        }
-                    };
-                    Document.Elements.Add(linElement);
+                            Id = link.Id,
+                            Label = new LabelElement
+                            {
+                                Text = link.Label
+                            }
+                        };
+                        linkElement.Label.Size = EditLabelAction.GetTextSize(linkElement);
+                        linkElement.Label.PositionBySite(linkElement);
+                        Document.Elements.Add(linkElement);
+                    }
                 }
 
                 Document.SetCurrentId();
                 RecreateEventsHandlers();
             }
+
+            RestartInitValues();
+            base.Invalidate();
         }
 
         #endregion
@@ -1020,17 +1022,15 @@ namespace Elan.UserControls
         {
             if (Document.Action == DesignerAction.Connect)
             {
-                this._connStart = connStart;
-                _connEnd = new ConnectorElement(connStart.ParentElement);
+                _connStart = connStart;
+                _connEnd = new ConnectorElement(connStart.ParentElement) {Location = connStart.Location};
 
-                _connEnd.Location = connStart.Location;
-                var ctrl = (IMoveController) ((IControllable) _connEnd).GetController();
-                ctrl.Start(mousePoint);
+                var controller = (IMoveController) ((IControllable) _connEnd).GetController();
+                controller.Start(mousePoint);
 
                 _isAddLink = true;
 
                 _linkLine = new StraightLinkElement(connStart, _connEnd) {BorderWidth = 1};
-
 
                 Invalidate(_linkLine, true);
 

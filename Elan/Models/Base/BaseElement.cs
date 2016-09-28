@@ -10,21 +10,24 @@ namespace Elan.Models.Base
         protected BaseElement()
         {
         }
+
         protected BaseElement(int top, int left, int width, int height)
         {
             location = new Point(top, left);
             size = new Size(width, height);
         }
 
-        //[Browsable(false)]
+        [Browsable(false)]
         public int Id { get; set; }
-        //[Browsable(false)]
-        public bool IsFictitious { get; set; }
 
         protected int borderWidth = 1;
+
         protected internal Rectangle InvalidateRec = Rectangle.Empty;
+
         protected internal bool IsInvalidated = true;
+
         protected Point location;
+
         public Size size;
         
         [DisplayName("Позиция")]
@@ -64,6 +67,7 @@ namespace Elan.Models.Base
         {
             IsInvalidated = false;
         }
+
         public virtual void Invalidate()
         {
             InvalidateRec = IsInvalidated 
@@ -72,18 +76,22 @@ namespace Elan.Models.Base
 
             IsInvalidated = true;
         }
+
         protected virtual void OnAppearanceChanged(EventArgs e)
         {
             AppearanceChanged?.Invoke(this, e);
         }
+
         public virtual Rectangle GetRectangle()
         {
             return new Rectangle(Location, Size);
         }
+
         public virtual Rectangle GetUnsignedRectangle()
         {
             return GetUnsignedRectangle(GetRectangle());
         }
+
         public static Rectangle GetUnsignedRectangle(Rectangle rectangle)
         {
             var unsignedRectangle = rectangle;

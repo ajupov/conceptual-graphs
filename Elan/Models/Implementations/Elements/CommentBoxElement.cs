@@ -12,14 +12,17 @@ namespace Elan.Models.Implementations.Elements
         public CommentBoxElement() : this(0, 0, 100, 100)
         {
         }
+
         public CommentBoxElement(Rectangle rectangle)
             : this(rectangle.Location, rectangle.Size)
         {
         }
+
         public CommentBoxElement(Point point, Size size)
             : this(point.X, point.Y, size.Width, size.Height)
         {
         }
+
         public CommentBoxElement(int top, int left, int width, int height)
             : base(top, left, width, height)
         {
@@ -27,6 +30,7 @@ namespace Elan.Models.Implementations.Elements
         }
 
         protected Size FoldSize = new Size(10, 15);
+
         [NonSerialized]
         private RectangleController _controller;
 

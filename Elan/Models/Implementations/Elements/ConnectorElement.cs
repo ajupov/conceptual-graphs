@@ -20,7 +20,9 @@ namespace Elan.Models.Implementations.Elements
         }
 
         public NodeElement ParentElement { get; }
+
         public ElementCollection Links { get; } = new ElementCollection();
+
         public override Point Location
         {
             get { return base.Location; }
@@ -57,10 +59,12 @@ namespace Elan.Models.Implementations.Elements
         {
             Links.Add(baseLinkElement);
         }
+
         internal void RemoveLink(BaseLinkElement baseLinkElement)
         {
             Links.Remove(baseLinkElement);
         }
+
         internal CardinalDirection GetDirection()
         {
             var rectangle = new Rectangle(ParentElement.Location, ParentElement.Size);
@@ -69,6 +73,7 @@ namespace Elan.Models.Implementations.Elements
 
             return DiagramHelper.GetDirection(rectangle, point);
         }
+
         IController IControllable.GetController()
         {
             return _controller ?? (_controller = new ConnectorController(this));

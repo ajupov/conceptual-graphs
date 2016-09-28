@@ -27,6 +27,7 @@ namespace Elan.Controllers.Implementations
                 }
             }
         }
+
         public override bool HitTest(Point point)
         {
             var graphicsPath = new GraphicsPath();

@@ -4,7 +4,6 @@ using System.Linq;
 using Dapper;
 using Elan.Content;
 using Elan.Models.Domain;
-using Elan.Models.Implementations.Containers;
 using DomainDocument = Elan.Models.Domain.Document;
 
 namespace Elan.Services

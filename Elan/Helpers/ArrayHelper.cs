@@ -20,6 +20,7 @@ namespace Elan.Helpers
             list.AddRange(array2);
             return list.ToArray(array1Type);
         }
+
         public static Array Shrink(Array array, object removeValue)
         {
             var list = new ArrayList(array.Length - 1);

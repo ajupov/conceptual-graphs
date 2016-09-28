@@ -14,7 +14,9 @@ namespace Elan.Events
         }
 
         public NodeElement Node1 { get; }
+
         public NodeElement Node2 { get; }
+
         public BaseLinkElement Link { get; }
 
         public override string ToString()

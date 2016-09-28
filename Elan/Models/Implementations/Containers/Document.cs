@@ -23,16 +23,16 @@ namespace Elan.Models.Implementations.Containers
         #region Для БД
         [Browsable(false)]
         public int Id { get; set; }
+
         [DisplayName("Название")]
         public string Name { get; set; }
+
         public DomainDocument GetDocument()
         {
             var document = new DomainDocument
             {
                 Id = Id,
                 Name = Name,
-                Width = Size.Width,
-                Height = Size.Height,
                 Nodes = Elements.GetNodes(),
                 Links = Elements.GetLinks()
             };
@@ -43,35 +43,53 @@ namespace Elan.Models.Implementations.Containers
 
         #region Свойства скрытые
         private DesignerAction _action = DesignerAction.Select;
+
         private bool _canFireEvents = true;
+
         private CompositingQuality _compositingQuality = CompositingQuality.AssumeLinear;
+
         private readonly ElementCollection _elements = new ElementCollection();
+
         private ElementType _elementType = ElementType.RectangleNode;
+
         private Size _gridSize = new Size(50, 50);
+
         private LinkType _linkType = LinkType.RightAngle;
+
         private Point _location = new Point(100, 100);
+
         private PixelOffsetMode _pixelOffsetMode = PixelOffsetMode.Default;
+
         private SmoothingMode _smoothingMode = SmoothingMode.HighQuality;
+
         private Size _windowSize = new Size(0, 0);
+
         private float _zoom = 1.0f;
         #endregion
 
         #region Свойства
         [Browsable(false)]
+
         public ElementCollection Elements => _elements;
+
         [Browsable(false)]
         public ElementCollection SelectedElements { get; } = new ElementCollection();
+
         [Browsable(false)]
         public ElementCollection SelectedNodes { get; } = new ElementCollection();
+
         [Browsable(false)]
         public Point Location => _elements.WindowLocation;
+
         [Browsable(false)]
         public Size Size => _elements.WindowSize;
+
         [Browsable(false)]
         internal Size WindowSize
         {
             set { _windowSize = value; }
         }
+
         [Browsable(false)]
         public SmoothingMode SmoothingMode
         {
@@ -82,6 +100,7 @@ namespace Elan.Models.Implementations.Containers
                 OnAppearancePropertyChanged(new EventArgs());
             }
         }
+
         [Browsable(false)]
         public PixelOffsetMode PixelOffsetMode
         {
@@ -92,6 +111,7 @@ namespace Elan.Models.Implementations.Containers
                 OnAppearancePropertyChanged(new EventArgs());
             }
         }
+
         [Browsable(false)]
         public CompositingQuality CompositingQuality
         {
@@ -102,6 +122,7 @@ namespace Elan.Models.Implementations.Containers
                 OnAppearancePropertyChanged(new EventArgs());
             }
         }
+
         [Browsable(false)]
         public DesignerAction Action
         {
@@ -112,6 +133,7 @@ namespace Elan.Models.Implementations.Containers
                 OnPropertyChanged(new EventArgs());
             }
         }
+
         [Browsable(false)]
         public float Zoom
         {
@@ -122,6 +144,7 @@ namespace Elan.Models.Implementations.Containers
                 OnPropertyChanged(new EventArgs());
             }
         }
+
         [Browsable(false)]
         public ElementType ElementType
         {
@@ -132,6 +155,7 @@ namespace Elan.Models.Implementations.Containers
                 OnPropertyChanged(new EventArgs());
             }
         }
+
         [Browsable(false)]
         public LinkType LinkType
         {
@@ -142,6 +166,7 @@ namespace Elan.Models.Implementations.Containers
                 OnPropertyChanged(new EventArgs());
             }
         }
+
         [Browsable(false)]
         public Size GridSize
         {
@@ -157,15 +182,20 @@ namespace Elan.Models.Implementations.Containers
         #region Добавление
         public void AddElement(BaseElement element)
         {
-            element.Id = FictitiousIdHelper.NextId;
+            if (element.Id == 0)
+            {
+                element.Id = FictitiousIdHelper.NextId;
+            }
             _elements.Add(element);
             element.AppearanceChanged += ElementAppearanceChanged;
             OnAppearancePropertyChanged(new EventArgs());
         }
+
         public void AddElements(ElementCollection collection)
         {
             AddElements(collection.GetArray());
         }
+
         public void AddElements(BaseElement[] elements)
         {
             _elements.EnabledCalc = false;
@@ -175,10 +205,12 @@ namespace Elan.Models.Implementations.Containers
             }
             _elements.EnabledCalc = true;
         }
+
         internal bool CanAddLink(ConnectorElement start, ConnectorElement end)
         {
             return (start != end) && (start.ParentElement != end.ParentElement);
         }
+
         public BaseLinkElement AddLink(ConnectorElement start, ConnectorElement end)
         {
             if (CanAddLink(start, end))
@@ -235,11 +267,13 @@ namespace Elan.Models.Implementations.Containers
                 OnAppearancePropertyChanged(new EventArgs());
             }
         }
+
         public void DeleteElement(Point point)
         {
             var selectedElement = FindElement(point);
             DeleteElement(selectedElement);
         }
+
         public void DeleteSelectedElements()
         {
             SelectedElements.EnabledCalc = false;
@@ -253,6 +287,7 @@ namespace Elan.Models.Implementations.Containers
             SelectedElements.EnabledCalc = true;
             SelectedNodes.EnabledCalc = true;
         }
+
         public void DeleteLink(BaseLinkElement linkElement)
         {
             if (linkElement != null)
@@ -280,6 +315,7 @@ namespace Elan.Models.Implementations.Containers
             SelectedNodes.Clear();
             OnElementSelection(this, new ElementSelectionEventArgs(SelectedElements));
         }
+
         public void SelectElement(BaseElement element)
         {
             SelectedElements.Add(element);
@@ -292,6 +328,7 @@ namespace Elan.Models.Implementations.Containers
                 OnElementSelection(this, new ElementSelectionEventArgs(SelectedElements));
             }
         }
+
         public void SelectElements(BaseElement[] elements)
         {
             SelectedElements.EnabledCalc = false;
@@ -315,6 +352,7 @@ namespace Elan.Models.Implementations.Containers
 
             OnElementSelection(this, new ElementSelectionEventArgs(SelectedElements));
         }
+
         public void SelectElements(Rectangle selectionRectangle)
         {
             SelectedElements.EnabledCalc = false;
@@ -359,6 +397,7 @@ namespace Elan.Models.Implementations.Containers
 
             OnElementSelection(this, new ElementSelectionEventArgs(SelectedElements));
         }
+
         public void SelectAllElements()
         {
             SelectedElements.EnabledCalc = false;
@@ -380,6 +419,7 @@ namespace Elan.Models.Implementations.Containers
             SelectedElements.EnabledCalc = true;
             SelectedNodes.EnabledCalc = true;
         }
+
         public BaseElement FindElement(Point point)
         {
             if ((_elements != null) && (_elements.Count > 0))
@@ -452,6 +492,7 @@ namespace Elan.Models.Implementations.Containers
             }
             return null;
         }
+
         private static BaseElement FindInnerElement(IContainer parent, Point point)
         {
             foreach (BaseElement element in parent.Elements)
@@ -486,6 +527,7 @@ namespace Elan.Models.Implementations.Containers
             SelectedElements.CalcWindow(forceCalc);
             SelectedNodes.CalcWindow(forceCalc);
         }
+
         public void MoveUpElement(BaseElement element)
         {
             var i = _elements.IndexOf(element);
@@ -495,6 +537,7 @@ namespace Elan.Models.Implementations.Containers
                 OnAppearancePropertyChanged(new EventArgs());
             }
         }
+
         public void MoveDownElement(BaseElement element)
         {
             var i = _elements.IndexOf(element);
@@ -504,6 +547,7 @@ namespace Elan.Models.Implementations.Containers
                 OnAppearancePropertyChanged(new EventArgs());
             }
         }
+
         public void BringToFrontElement(BaseElement element)
         {
             var i = _elements.IndexOf(element);
@@ -514,6 +558,7 @@ namespace Elan.Models.Implementations.Containers
             }
             OnAppearancePropertyChanged(new EventArgs());
         }
+
         public void SendToBackElement(BaseElement element)
         {
             var i = _elements.IndexOf(element);
@@ -567,12 +612,14 @@ namespace Elan.Models.Implementations.Containers
                 }
             }
         }
+
         private static bool NeedDrawElement(BaseElement element, Rectangle clippingRegion)
         {
             var elRectangle = element.GetUnsignedRectangle();
             elRectangle.Inflate(5, 5);
             return clippingRegion.IntersectsWith(elRectangle);
         }
+
         internal void DrawSelections(Graphics graphics, Rectangle clippingRegion)
         {
             for (var i = SelectedElements.Count - 1; i >= 0; i--)
@@ -594,6 +641,7 @@ namespace Elan.Models.Implementations.Containers
                 }
             }
         }
+
         internal void DrawGrid(Graphics graphics, Rectangle clippingRegion)
         {
             using (var pen = new Pen(new HatchBrush(HatchStyle.LargeGrid | HatchStyle.Percent90,
@@ -628,26 +676,34 @@ namespace Elan.Models.Implementations.Containers
         #region Возбуждение событий
         [field: NonSerialized]
         public event EventHandler PropertyChanged;
+
         protected virtual void OnPropertyChanged(EventArgs e)
         {
             PropertyChanged?.Invoke(this, e);
         }
+
         [field: NonSerialized]
         public event EventHandler AppearancePropertyChanged;
+
         protected virtual void OnAppearancePropertyChanged(EventArgs e)
         {
             OnPropertyChanged(e);
             AppearancePropertyChanged?.Invoke(this, e);
         }
+
         [field: NonSerialized]
         public event EventHandler ElementPropertyChanged;
+
         protected virtual void OnElementPropertyChanged(object sender, EventArgs e)
         {
             ElementPropertyChanged?.Invoke(sender, e);
         }
+
         public delegate void ElementSelectionEventHandler(object sender, ElementSelectionEventArgs e);
+
         [field: NonSerialized]
         public event ElementSelectionEventHandler ElementSelection;
+
         protected virtual void OnElementSelection(object sender, ElementSelectionEventArgs e)
         {
             ElementSelection?.Invoke(sender, e);
@@ -659,6 +715,7 @@ namespace Elan.Models.Implementations.Containers
         {
             RecreateEventsHandlers();
         }
+
         private void RecreateEventsHandlers()
         {
             foreach (BaseElement element in _elements)
@@ -666,6 +723,7 @@ namespace Elan.Models.Implementations.Containers
                 element.AppearanceChanged += ElementAppearanceChanged;
             }
         }
+
         [SecurityPermission(SecurityAction.Demand, SerializationFormatter = true)]
         private void ElementAppearanceChanged(object sender, EventArgs e)
         {

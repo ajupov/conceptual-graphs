@@ -34,6 +34,7 @@ namespace Elan.Helpers
 
             return CardinalDirection.Nothing;
         }
+
         public static Point GetUpperPoint(Point[] points)
         {
             var upper = new Point
@@ -57,6 +58,7 @@ namespace Elan.Helpers
 
             return upper;
         }
+
         public static Point GetLowerPoint(Point[] points)
         {
             var lower = new Point
@@ -80,6 +82,7 @@ namespace Elan.Helpers
 
             return lower;
         }
+
         public static Size MeasureString(string text, Font font)
         {
             SizeF size;
@@ -92,6 +95,7 @@ namespace Elan.Helpers
             }
             return Size.Round(size);
         }
+
         public static Size MeasureString(string text, Font font, int width, StringFormat format)
         {
             SizeF size;
@@ -104,10 +108,12 @@ namespace Elan.Helpers
             }
             return Size.Round(size);
         }
+
         private static Point DisplayToCartesianCoordinate(Point point, Rectangle referenceRec)
         {
             return new Point(point.X - referenceRec.Width / 2, point.Y - referenceRec.Height / 2);
         }
+
         private static double PointToAngle(Point point)
         {
             var angle = Math.Atan2(point.Y, point.X) * (180 / Math.PI);

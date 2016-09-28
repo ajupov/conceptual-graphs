@@ -14,6 +14,7 @@ namespace Elan.Controllers.Implementations
         }
 
         public BaseElement OwnerElement => ParentElement;
+
         protected LineElement ParentElement { get; }
 
         public void DrawSelection(Graphics graphics)
@@ -25,6 +26,7 @@ namespace Elan.Controllers.Implementations
             };
             graphics.DrawLine(pen, ParentElement.StartPoint, ParentElement.EndPoint);
         }
+
         public bool HitTest(Point point)
         {
             var graphicsPath = new GraphicsPath();
@@ -38,6 +40,7 @@ namespace Elan.Controllers.Implementations
             graphicsPath.Transform(matrix);
             return graphicsPath.IsOutlineVisible(point, pen);
         }
+
         public bool HitTest(Rectangle rectangle)
         {
             var graphicsPath = new GraphicsPath();

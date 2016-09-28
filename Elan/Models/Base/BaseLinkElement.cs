@@ -10,9 +10,13 @@ namespace Elan.Models.Base
     public abstract class BaseLinkElement : BaseElement
     {
         protected ConnectorElement connector1;
+
         protected ConnectorElement connector2;
+
         protected LineCap startCap;
+
         protected LineCap endCap;
+
         protected bool needCalcLink = true;
 
         internal BaseLinkElement(ConnectorElement connectorElement1, ConnectorElement connectorElement2)
@@ -85,19 +89,23 @@ namespace Elan.Models.Base
 
         [Browsable(false)]
         public abstract Point Point2 { get; }
+
         [Browsable(false)]
         public virtual LineCap StartCap
         {
             get { return startCap; }
             set { startCap = value; }
         }
+
         [Browsable(false)]
         public virtual LineCap EndCap
         {
             get { return endCap; }
             set { endCap = value; }
         }
+
         internal abstract void CalcLink();
+
         protected virtual void OnConnectorChanged(EventArgs e)
         {
             ConnectorChanged?.Invoke(this, e);

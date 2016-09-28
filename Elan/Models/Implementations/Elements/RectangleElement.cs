@@ -16,14 +16,17 @@ namespace Elan.Models.Implementations.Elements
             : this(0, 0, 100, 100)
         {
         }
+
         public RectangleElement(Rectangle rectangle)
             : this(rectangle.Location, rectangle.Size)
         {
         }
+
         public RectangleElement(Point point, Size size)
             : this(point.X, point.Y, size.Width, size.Height)
         {
         }
+
         public RectangleElement(int top, int left, int width, int height)
         {
             location = new Point(top, left);
@@ -40,6 +43,7 @@ namespace Elan.Models.Implementations.Elements
                 OnAppearanceChanged(new EventArgs());
             }
         }
+
         [DisplayName("Метка")]
         public virtual LabelElement Label
         {
@@ -52,7 +56,9 @@ namespace Elan.Models.Implementations.Elements
         }
 
         protected Color fillColor = Color.DodgerBlue;
+
         protected LabelElement label = new LabelElement();
+
         [NonSerialized]
         private RectangleController _controller;
 
@@ -86,6 +92,7 @@ namespace Elan.Models.Implementations.Elements
                 graphics.DrawRectangle(pen, rectangle);
             }
         }
+
         protected virtual Brush GetBrush()
         {
             return new SolidBrush(fillColor);

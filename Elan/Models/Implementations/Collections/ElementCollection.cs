@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using Elan.Enums;
-using Elan.Helpers;
 using Elan.Models.Base;
 using Elan.Models.Domain;
 using Elan.Models.Implementations.Elements;
@@ -17,125 +16,14 @@ namespace Elan.Models.Implementations.Collections
     {
         #region Свойства
         public const int MaxIntSize = 100;
+
         private bool _enabledCalc = true;
+
         private Point _location = new Point(MaxIntSize, MaxIntSize);
+
         private bool _needCalc = true;
+
         private Size _size = new Size(0, 0);
-        #endregion
-
-        #region Для БД
-        public List<Node> GetNodes()
-        {
-            return GetArray().Select(GetNode).Where(n => n != null).ToList();
-        }
-        private static Node GetNode(BaseElement element)
-        {
-            var node = new Node
-            {
-                Id = element.Id,
-                X = element.Location.X,
-                Y = element.Location.Y,
-                Width = element.Size.Width,
-                Height = element.Size.Height
-            };
-
-            if (element is RectangleNode)
-            {
-                var rectangleNode = (RectangleNode) element;
-                node.Type = NodeType.Concept;
-                node.Label = rectangleNode.Label.Text;
-            }
-            else if(element is EllipseNode)
-            {
-                var ellipseNode = (EllipseNode)element;
-                node.Type = NodeType.Relation;
-                node.Label = ellipseNode.Label.Text;
-            }
-            else if (element is CommentBoxElement)
-            {
-                var commentBox = (CommentBoxElement) element;
-                node.Type = NodeType.Comment;
-                node.Label = commentBox.Label.Text;
-            }
-            else
-            {
-                node = null;
-            }
-            return node;
-        }
-        public List<Link> GetLinks()
-        {
-            return GetArray().Select(GetLink).Where(n => n != null).ToList();
-        }
-        private static Link GetLink(BaseElement element)
-        {
-            if (element is StraightLinkElement)
-            {
-                var straightLink = (StraightLinkElement) element;
-                return new Link
-                {
-                    Id = straightLink.Id,
-                    Label = straightLink.Label.Text,
-                    StartPointX = straightLink.Point1.X,
-                    StartPointY = straightLink.Point1.Y,
-                    EndPointX = straightLink.Point2.X,
-                    EndPointY = straightLink.Point2.Y,
-                    StartNodeId = straightLink.Connector1.ParentElement.Id,
-                    EndNodeId = straightLink.Connector2.ParentElement.Id
-                };
-            }
-            return null;
-        }
-        #endregion
-
-        #region Свойства коллекции
-        public BaseElement[] GetArray()
-        {
-            var els = new BaseElement[InnerList.Count];
-            for (var i = 0; i <= InnerList.Count - 1; i++)
-            {
-                els[i] = (BaseElement)InnerList[i];
-            }
-            return els;
-        }
-        internal ElementCollection()
-        {
-        }
-        public BaseElement this[int item] => (BaseElement) InnerList[item];
-        internal virtual int Add(BaseElement element)
-        {
-            _needCalc = true;
-            return InnerList.Add(element);
-        }
-        public bool Contains(BaseElement element)
-        {
-            return InnerList.Contains(element);
-        }
-        public int IndexOf(BaseElement element)
-        {
-            return InnerList.IndexOf(element);
-        }
-        internal void Insert(int index, BaseElement element)
-        {
-            _needCalc = true;
-            InnerList.Insert(index, element);
-        }
-        internal void Remove(BaseElement element)
-        {
-            InnerList.Remove(element);
-            _needCalc = true;
-        }
-        internal void Clear()
-        {
-            InnerList.Clear();
-            _needCalc = true;
-        }
-        internal void ChangeIndex(int i, int y)
-        {
-            var tmp = InnerList[y];
-            InnerList[y] = InnerList[i];
-            InnerList[i] = tmp;
-        }
         #endregion
 
         #region Методы и свойства окна
@@ -152,6 +40,7 @@ namespace Elan.Models.Implementations.Collections
                 }
             }
         }
+
         internal Point WindowLocation
         {
             get
@@ -160,6 +49,7 @@ namespace Elan.Models.Implementations.Collections
                 return _location;
             }
         }
+
         internal Size WindowSize
         {
             get
@@ -168,6 +58,7 @@ namespace Elan.Models.Implementations.Collections
                 return _size;
             }
         }
+
         internal void CalcWindow(bool forceCalc)
         {
             if (forceCalc)
@@ -176,6 +67,7 @@ namespace Elan.Models.Implementations.Collections
             }
             CalcWindow();
         }
+
         internal void CalcWindow()
         {
             if (!_enabledCalc)
@@ -204,6 +96,7 @@ namespace Elan.Models.Implementations.Collections
 
             _needCalc = false;
         }
+
         internal void CalcWindowLocation(BaseElement element)
         {
             if (!_enabledCalc)
@@ -223,6 +116,7 @@ namespace Elan.Models.Implementations.Collections
                 _location.Y = elementLocation.Y;
             }
         }
+
         internal void CalcWindowSize(BaseElement element)
         {
             if (!_enabledCalc)
@@ -244,6 +138,133 @@ namespace Elan.Models.Implementations.Collections
             {
                 _size.Height = val;
             }
+        }
+        #endregion
+
+        #region Свойства коллекции
+        public BaseElement[] GetArray()
+        {
+            var els = new BaseElement[InnerList.Count];
+            for (var i = 0; i <= InnerList.Count - 1; i++)
+            {
+                els[i] = (BaseElement)InnerList[i];
+            }
+            return els;
+        }
+
+        internal ElementCollection()
+        {
+        }
+
+        public BaseElement this[int item] => (BaseElement) InnerList[item];
+
+        internal virtual int Add(BaseElement element)
+        {
+            _needCalc = true;
+            return InnerList.Add(element);
+        }
+
+        public bool Contains(BaseElement element)
+        {
+            return InnerList.Contains(element);
+        }
+
+        public int IndexOf(BaseElement element)
+        {
+            return InnerList.IndexOf(element);
+        }
+
+        internal void Insert(int index, BaseElement element)
+        {
+            _needCalc = true;
+            InnerList.Insert(index, element);
+        }
+
+        internal void Remove(BaseElement element)
+        {
+            InnerList.Remove(element);
+            _needCalc = true;
+        }
+
+        internal void Clear()
+        {
+            InnerList.Clear();
+            _needCalc = true;
+        }
+
+        internal void ChangeIndex(int i, int y)
+        {
+            var tmp = InnerList[y];
+            InnerList[y] = InnerList[i];
+            InnerList[i] = tmp;
+        }
+        #endregion
+
+        #region Для БД
+        public List<Node> GetNodes()
+        {
+            return GetArray().Select(GetNode).Where(n => n != null).ToList();
+        }
+
+        private static Node GetNode(BaseElement element)
+        {
+            var node = new Node
+            {
+                Id = element.Id,
+                X = element.Location.X,
+                Y = element.Location.Y,
+                Width = element.Size.Width,
+                Height = element.Size.Height
+            };
+
+            if (element is RectangleNode)
+            {
+                var rectangleNode = (RectangleNode)element;
+                node.Type = NodeType.Concept;
+                node.Label = rectangleNode.Label.Text;
+            }
+            else if (element is EllipseNode)
+            {
+                var ellipseNode = (EllipseNode)element;
+                node.Type = NodeType.Relation;
+                node.Label = ellipseNode.Label.Text;
+            }
+            else if (element is CommentBoxElement)
+            {
+                var commentBox = (CommentBoxElement)element;
+                node.Type = NodeType.Comment;
+                node.Label = commentBox.Label.Text;
+            }
+            else
+            {
+                node = null;
+            }
+            return node;
+        }
+
+        public List<Link> GetLinks()
+        {
+            return GetArray().Select(GetLink).Where(n => n != null).ToList();
+        }
+
+        private static Link GetLink(BaseElement element)
+        {
+            if (element is StraightLinkElement)
+            {
+                var straightLink = (StraightLinkElement)element;
+                return new Link
+                {
+                    Id = straightLink.Id,
+                    Label = straightLink.Label.Text,
+                    StartPointX = straightLink.Point1.X,
+                    StartPointY = straightLink.Point1.Y,
+                    EndPointX = straightLink.Point2.X,
+                    EndPointY = straightLink.Point2.Y,
+                    StartNodeId = straightLink.Connector1.ParentElement.Id,
+                    EndNodeId = straightLink.Connector2.ParentElement.Id
+                };
+            }
+            return null;
         }
         #endregion
     }

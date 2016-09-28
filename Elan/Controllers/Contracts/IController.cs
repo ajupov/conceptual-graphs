@@ -8,7 +8,9 @@ namespace Elan.Controllers.Contracts
         BaseElement OwnerElement { get; }
 
         void DrawSelection(Graphics graphics);
+
         bool HitTest(Point point);
+
         bool HitTest(Rectangle rectangle);
     }
 }

@@ -11,17 +11,20 @@ namespace Elan.Actions
 {
     public class MoveAction
     {
-        #region Ñגמיסעגא
         public delegate void OnElementMovingDelegate(ElementEventArgs e);
-        private Document _document;
-        private IMoveController[] _moveControllers;
-        private OnElementMovingDelegate _onElementMovingDelegate;
-        private Point _upperSelPoint = Point.Empty;
-        private Point _upperSelPointDragOffset = Point.Empty;
-        public bool IsMoving { get; private set; }
-        #endregion
 
-        #region Ìועמהû
+        private Document _document;
+
+        private IMoveController[] _moveControllers;
+
+        private OnElementMovingDelegate _onElementMovingDelegate;
+
+        private Point _upperSelPoint = Point.Empty;
+
+        private Point _upperSelPointDragOffset = Point.Empty;
+
+        public bool IsMoving { get; private set; }
+
         public void Start(Point mousePoint, Document document, OnElementMovingDelegate onElementMovingDelegate)
         {
             _document = document;
@@ -44,6 +47,7 @@ namespace Elan.Actions
                     {
                         var label = ((ILabelElement) document.SelectedElements[i]).Label;
                         moveLabelCtrl[i] = ControllerHelper.GetMoveController(label);
+
                         if ((moveLabelCtrl[i] != null) && moveLabelCtrl[i].CanMove)
                         {
                             moveLabelCtrl[i].Start(mousePoint);
@@ -99,6 +103,7 @@ namespace Elan.Actions
 
             IsMoving = true;
         }
+
         public void Move(Point dragPoint)
         {
             //Upper selecion point controller
@@ -126,48 +131,50 @@ namespace Elan.Actions
                 dragPoint.Y = dragPoint.Y - _upperSelPoint.Y;
             }
 
-            foreach (var ctrl in _moveControllers)
+            foreach (var moveController in _moveControllers)
             {
-                if (ctrl != null)
+                if (moveController != null)
                 {
-                    ctrl.OwnerElement.Invalidate();
+                    moveController.OwnerElement.Invalidate();
 
-                    _onElementMovingDelegate(new ElementEventArgs(ctrl.OwnerElement));
+                    _onElementMovingDelegate(new ElementEventArgs(moveController.OwnerElement));
 
-                    ctrl.Move(dragPoint);
+                    moveController.Move(dragPoint);
 
-                    if (ctrl.OwnerElement is NodeElement)
+                    if (moveController.OwnerElement is NodeElement)
                     {
-                        UpdateLinkPosition((NodeElement) ctrl.OwnerElement);
+                        UpdateLinkPosition((NodeElement) moveController.OwnerElement);
                     }
 
-                    var lblCtrl = ControllerHelper.GetLabelController(ctrl.OwnerElement);
-                    lblCtrl?.SetLabelPosition();
+                    var controller = ControllerHelper.GetLabelController(moveController.OwnerElement);
+                    controller?.SetLabelPosition();
                 }
             }
         }
+
         public void End()
         {
             _upperSelPoint = Point.Empty;
             _upperSelPointDragOffset = Point.Empty;
 
-            foreach (var ctrl in _moveControllers)
+            foreach (var moveController in _moveControllers)
             {
-                if (ctrl != null)
+                if (moveController != null)
                 {
-                    if (ctrl.OwnerElement is NodeElement)
+                    if (moveController.OwnerElement is NodeElement)
                     {
-                        UpdateLinkPosition((NodeElement) ctrl.OwnerElement);
+                        UpdateLinkPosition((NodeElement) moveController.OwnerElement);
                     }
 
-                    ctrl.End();
+                    moveController.End();
 
-                    _onElementMovingDelegate(new ElementEventArgs(ctrl.OwnerElement));
+                    _onElementMovingDelegate(new ElementEventArgs(moveController.OwnerElement));
                 }
             }
 
             IsMoving = false;
         }
+
         private void UpdateUpperSelectionPoint()
         {
             var points = new Point[_document.SelectedElements.Count];
@@ -179,37 +186,44 @@ namespace Elan.Actions
             }
             _upperSelPoint = DiagramHelper.GetUpperPoint(points);
         }
+
         private static void UpdateLinkPosition(NodeElement node)
         {
-            foreach (var conn in node.Connectors)
+            foreach (var connectorElement in node.Connectors)
             {
-                foreach (BaseElement element in conn.Links)
+                foreach (BaseElement element in connectorElement.Links)
                 {
-                    var lnk = (BaseLinkElement) element;
-                    var controller = ((IControllable) lnk).GetController();
+                    var linkElement = (BaseLinkElement) element;
+                    var controller = ((IControllable) linkElement).GetController();
                     if (controller is IMoveController)
                     {
                         var moveController = (IMoveController) controller;
-                        if (!moveController.IsMoving) lnk.NeedCalcLink = true;
+                        if (!moveController.IsMoving) linkElement.NeedCalcLink = true;
                     }
-                    else lnk.NeedCalcLink = true;
-
-                    if (lnk is ILabelElement)
+                    else
                     {
-                        var label = ((ILabelElement) lnk).Label;
+                        linkElement.NeedCalcLink = true;
+                    }
 
-                        var lblCtrl = ControllerHelper.GetLabelController(lnk);
-                        if (lblCtrl != null)
-                            lblCtrl.SetLabelPosition();
+                    if (linkElement is ILabelElement)
+                    {
+                        var label = ((ILabelElement) linkElement).Label;
+
+                        var labelController = ControllerHelper.GetLabelController(linkElement);
+
+                        if (labelController != null)
+                        {
+                            labelController.SetLabelPosition();
+                        }
                         else
                         {
-                            label.PositionBySite(lnk);
+                            label.PositionBySite(linkElement);
                         }
+
                         label.Invalidate();
                     }
                 }
             }
         }
-        #endregion
     }
 }

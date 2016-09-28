@@ -12,16 +12,18 @@ namespace Elan.Actions
 {
     public class ResizeAction
     {
-        #region Ñגמיסעגא
         public delegate void OnElementResizingDelegate(ElementEventArgs e);
-        private Document _document;
-        private OnElementResizingDelegate _onElementResizingDelegate;
-        private IResizeController _resizeController;
-        public bool IsResizing { get; private set; }
-        public bool IsResizingLink => _resizeController?.OwnerElement is BaseLinkElement;
-        #endregion
 
-        #region Ìועמהû
+        private Document _document;
+
+        private OnElementResizingDelegate _onElementResizingDelegate;
+
+        private IResizeController _resizeController;
+
+        public bool IsResizing { get; private set; }
+
+        public bool IsResizingLink => _resizeController?.OwnerElement is BaseLinkElement;
+
         public void Select(Document document)
         {
             _document = document;
@@ -40,6 +42,7 @@ namespace Elan.Actions
                 _resizeController = null;
             }
         }
+
         public void Start(Point mousePoint, OnElementResizingDelegate onElementResizingDelegate)
         {
             IsResizing = false;
@@ -68,6 +71,7 @@ namespace Elan.Actions
                 IsResizing = true;
             }
         }
+
         public void Resize(Point dragPoint)
         {
             if ((_resizeController != null) && _resizeController.CanResize)
@@ -80,10 +84,10 @@ namespace Elan.Actions
 
                 _resizeController.Resize(dragPoint);
 
-                var lblCtrl = ControllerHelper.GetLabelController(_resizeController.OwnerElement);
-                if (lblCtrl != null)
+                var labelController = ControllerHelper.GetLabelController(_resizeController.OwnerElement);
+                if (labelController != null)
                 {
-                    lblCtrl.SetLabelPosition();
+                    labelController.SetLabelPosition();
                 }
                 else
                 {
@@ -97,6 +101,7 @@ namespace Elan.Actions
                 UpdateResizeCorner();
             }
         }
+
         public void End(Point endPoint)
         {
             if (_resizeController != null)
@@ -112,31 +117,34 @@ namespace Elan.Actions
                 IsResizing = false;
             }
         }
+
         public void DrawResizeCorner(Graphics graphics)
         {
             if (_resizeController != null)
             {
-                foreach (var r in _resizeController.Corners)
+                foreach (var corner in _resizeController.Corners)
                 {
                     switch (_document.Action)
                     {
                         case DesignerAction.Select:
-                            r.Draw(graphics);
+                            corner.Draw(graphics);
                             break;
                         case DesignerAction.Connect:
                             if (_resizeController.OwnerElement is BaseLinkElement)
                             {
-                                r.Draw(graphics);
+                                corner.Draw(graphics);
                             }
                             break;
                     }
                 }
             }
         }
+
         public void UpdateResizeCorner()
         {
             _resizeController?.UpdateCornersPos();
         }
+
         public Cursor UpdateResizeCornerCursor(Point mousePoint)
         {
             if ((_resizeController == null) || !_resizeController.CanResize)
@@ -144,9 +152,9 @@ namespace Elan.Actions
                 return Cursors.Default;
             }
 
-            var corPos = _resizeController.HitTestCorner(mousePoint);
+            var cornerPosition = _resizeController.HitTestCorner(mousePoint);
 
-            switch (corPos)
+            switch (cornerPosition)
             {
                 case CornerPosition.TopLeft:
                     return Cursors.SizeNWSE;
@@ -173,6 +181,5 @@ namespace Elan.Actions
                     return Cursors.Default;
             }
         }
-        #endregion
     }
 }

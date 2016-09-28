@@ -1,7 +1,6 @@
 using System;
 using System.ComponentModel;
 using System.Drawing;
-using System.Drawing.Drawing2D;
 using Elan.Controllers.Contracts;
 using Elan.Controllers.Implementations;
 using Elan.Helpers;
@@ -22,13 +21,16 @@ namespace Elan.Models.Implementations.Elements
 
         [Browsable(false)]
         public override Point Point1 => line1.StartPoint;
+
         [Browsable(false)]
         public override Point Point2 => line1.EndPoint;
+
         public override int BorderWidth
         {
             get { return line1.BorderWidth; }
             set { line1.BorderWidth = value; }
         }
+
         public override Point Location
         {
             get
@@ -37,6 +39,7 @@ namespace Elan.Models.Implementations.Elements
                 return line1.Location;
             }
         }
+
         public override Size Size
         {
             get
@@ -49,7 +52,9 @@ namespace Elan.Models.Implementations.Elements
         public override LineElement[] Lines => new[] { line1 };
 
         protected LabelElement label = new LabelElement();
+
         protected LineElement line1 = new LineElement(0, 0, 0, 0);
+
         [NonSerialized]
         private LineController _controller;
         
@@ -62,11 +67,13 @@ namespace Elan.Models.Implementations.Elements
                 OnAppearanceChanged(new EventArgs());
             }
         }
+
         public override void Draw(Graphics graphics)
         {
             IsInvalidated = false;
             line1.Draw(graphics);
         }
+
         internal override void CalcLink()
         {
             if (needCalcLink == false)
