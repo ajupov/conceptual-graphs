@@ -145,6 +145,12 @@
     <Compile Include="Enums\LinkType.cs" />
     <Compile Include="Enums\NodeType.cs" />
     <Compile Include="Enums\Orientation.cs" />
+    <Compile Include="Forms\TableViewForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\TableViewForm.Designer.cs">
+      <DependentUpon>TableViewForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\DocumentListForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -178,6 +184,7 @@
     <Compile Include="Models\Implementations\CharGer\Type.cs" />
     <Compile Include="Models\Implementations\Others\DbSettings.cs" />
     <Compile Include="Models\Implementations\Tuples\LineVariantTuple.cs" />
+    <Compile Include="Models\Implementations\Tuples\TableItemTuple.cs" />
     <Compile Include="Services\JsonManager.cs" />
     <Compile Include="Services\XmlManager.cs" />
     <Compile Include="Services\DataBaseManager.cs" />
@@ -306,6 +313,9 @@
     <EmbeddedResource Include="Content\Strings.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Strings.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\TableViewForm.resx">
+      <DependentUpon>TableViewForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\DocumentListForm.resx">
       <DependentUpon>DocumentListForm.cs</DependentUpon>

@@ -374,5 +374,11 @@ namespace Elan.Forms
             }
         }
         #endregion
+
+        private void TableViewMenuItemClick(object sender, EventArgs e)
+        {
+            var form = new TableViewForm(designer.Document.GetDocument());
+            form.ShowDialog();
+        }
     }
 }

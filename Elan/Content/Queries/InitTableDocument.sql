@@ -8,7 +8,7 @@ if (not exists (
 begin
 	create table dbo.Document
 	(
-		Id		int identity (1, 1) not null,
+		Id		bigint identity (1, 1) not null,
 		Name	nvarchar(max) not null
 	);
 end;

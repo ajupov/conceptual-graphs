@@ -104,6 +104,7 @@ namespace Elan.Forms
             this.propertyGrid = new System.Windows.Forms.PropertyGrid();
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.saveFileDialog = new System.Windows.Forms.SaveFileDialog();
+            this.tableViewMenuItem = new System.Windows.Forms.MenuItem();
             this.panel.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -274,7 +275,8 @@ namespace Elan.Forms
             this.viewMenuItem.Index = 2;
             this.viewMenuItem.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
             this.zoomOutMenuItem,
-            this.zoomInMenuItem});
+            this.zoomInMenuItem,
+            this.tableViewMenuItem});
             this.viewMenuItem.Text = "Вид";
             // 
             // zoomOutMenuItem
@@ -445,6 +447,12 @@ namespace Elan.Forms
             // 
             this.saveFileDialog.Filter = "Граф Elan (*.json)|*.json|Граф CharGer (*.cgx)|*.cgx|Все файлы (*.*)|*.*";
             // 
+            // tableViewMenuItem
+            // 
+            this.tableViewMenuItem.Index = 2;
+            this.tableViewMenuItem.Text = "Табличное представление";
+            this.tableViewMenuItem.Click += new System.EventHandler(this.TableViewMenuItemClick);
+            // 
             // MainForm
             // 
             this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
@@ -465,5 +473,7 @@ namespace Elan.Forms
 
         }
         #endregion
+
+        private MenuItem tableViewMenuItem;
     }
 }

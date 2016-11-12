@@ -8,8 +8,8 @@ if (not exists (
 begin
 	create table dbo.Node
 	(
-		Id			int not null,
-		DocumentId	int not null,
+		Id			bigint not null,
+		DocumentId	bigint not null,
 		Type		int not null,
 		Label		nvarchar(max) not null,
 		X			int not null,

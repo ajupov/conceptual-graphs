@@ -8,10 +8,10 @@ if (not exists (
 begin
 	create table dbo.Link
 	(
-		Id			int not null,
-		DocumentId	int not null,
-		StartNodeId	int not null,
-		EndNodeId	int not null,
+		Id			bigint not null,
+		DocumentId	bigint not null,
+		StartNodeId	bigint not null,
+		EndNodeId	bigint not null,
 		Label		nvarchar(max) not null,
 		StartPointX	int not null,
 		StartPointY	int not null,

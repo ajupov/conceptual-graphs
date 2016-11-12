@@ -119,9 +119,10 @@ namespace Elan.Services
             {
                 AddArrow(cultureInfo, xmlDocument, rootElementsNode, link.Id, document.Id, link.Label, link.StartNodeId, link.EndNodeId, link.StartPointX, link.StartPointY);
             }
-            var streamWriter = new StreamWriter(new FileStream(fileName, FileMode.Create, FileAccess.Write),
-                Encoding.GetEncoding("windows-1251"));
-            xmlDocument.Save(streamWriter);
+            using (var streamWriter = new StreamWriter(new FileStream(fileName, FileMode.Create, FileAccess.Write), Encoding.GetEncoding("windows-1251")))
+            {
+                xmlDocument.Save(streamWriter);
+            }
         }
 
         private static void AddNode(IFormatProvider cultureInfo, XmlDocument xmlDocument, XmlNode rootNode, long id, long owner, string label, double x, double y, double width, double height, ChargerXmlElementType type)

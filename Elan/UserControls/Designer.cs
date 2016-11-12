@@ -763,9 +763,9 @@ namespace Elan.UserControls
             var document = FileManager.Open(fileName, type);
             CreateDocument(document);
             RestartInitValues();
-            base.Invalidate();
             Document.SetCurrentId();
             RecreateEventsHandlers();
+            Invalidate();
         }
 
         public void SaveDb()
@@ -807,7 +807,7 @@ namespace Elan.UserControls
             }
 
             RestartInitValues();
-            base.Invalidate();
+            Invalidate();
         }
 
         public void CreateDocument(DomainDocument domainDocument)
