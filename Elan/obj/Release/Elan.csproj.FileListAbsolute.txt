@@ -1,0 +1,15 @@
+C:\Projects\Elan\Elan\bin\Release\Elan.exe
+C:\Projects\Elan\Elan\bin\Release\Dapper.dll
+C:\Projects\Elan\Elan\bin\Release\Microsoft.Data.ConnectionUI.Dialog.dll
+C:\Projects\Elan\Elan\bin\Release\Microsoft.Data.ConnectionUI.dll
+C:\Projects\Elan\Elan\bin\Release\Newtonsoft.Json.dll
+C:\Projects\Elan\Elan\bin\Release\Dapper.xml
+C:\Projects\Elan\Elan\bin\Release\Newtonsoft.Json.xml
+C:\Projects\Elan\Elan\obj\Release\Elan.Content.Queries.resources
+C:\Projects\Elan\Elan\obj\Release\Elan.Content.Strings.resources
+C:\Projects\Elan\Elan\obj\Release\Elan.Forms.DocumentListForm.resources
+C:\Projects\Elan\Elan\obj\Release\Elan.Forms.InputForm.resources
+C:\Projects\Elan\Elan\obj\Release\Elan.Forms.MainForm.resources
+C:\Projects\Elan\Elan\obj\Release\Elan.UserControls.Designer.resources
+C:\Projects\Elan\Elan\obj\Release\Elan.csproj.GenerateResource.Cache
+C:\Projects\Elan\Elan\obj\Release\Elan.exe

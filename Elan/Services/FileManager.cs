@@ -1,21 +1,41 @@
-﻿using System.IO;
-using Elan.Models.Domain;
-using Newtonsoft.Json;
+﻿using Elan.Models.Domain;
+using Elan.Enums;
 
 namespace Elan.Services
 {
     public static class FileManager
     {
-        public static void Save(string fileName, Document document)
+        public static Document Open(string fileName, FileExtensionType type)
         {
-            var serialized = JsonConvert.SerializeObject(document);
-            File.WriteAllText(fileName, serialized);
+            var document = new Document();
+
+            switch (type)
+            {
+                case FileExtensionType.Json:
+                    document = JsonManager.Open(fileName);
+                    break;
+                case FileExtensionType.Cgx:
+                case FileExtensionType.Xml:
+                case FileExtensionType.Txt:
+                    document = XmlManager.Open(fileName);
+                    break;
+            }
+            return document;
         }
 
-        public static Document Open(string fileName)
+        public static void Save(string fileName, Document document, FileExtensionType type)
         {
-            var serialized = File.ReadAllText(fileName);
-            return JsonConvert.DeserializeObject<Document>(serialized);
+            switch (type)
+            {
+                case FileExtensionType.Json:
+                    JsonManager.Save(fileName, document);
+                    break;
+                case FileExtensionType.Cgx:
+                case FileExtensionType.Xml:
+                case FileExtensionType.Txt:
+                    XmlManager.Save(fileName, document);
+                    break;
+            }
         }
     }
 }

@@ -137,8 +137,10 @@
       <DependentUpon>Strings.resx</DependentUpon>
     </Compile>
     <Compile Include="Enums\CardinalDirection.cs" />
+    <Compile Include="Enums\ChargerXmlElementType.cs" />
     <Compile Include="Enums\CornerPosition.cs" />
     <Compile Include="Enums\ElementType.cs" />
+    <Compile Include="Enums\FileExtensionType.cs" />
     <Compile Include="Enums\LabelEditDirection.cs" />
     <Compile Include="Enums\LinkType.cs" />
     <Compile Include="Enums\NodeType.cs" />
@@ -162,10 +164,22 @@
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Helpers\ArrayHelper.cs" />
+    <Compile Include="Models\Base\Charger\Color.cs" />
+    <Compile Include="Models\Base\Charger\Rectangle.cs" />
     <Compile Include="Models\Domain\Document.cs" />
     <Compile Include="Models\Domain\Link.cs" />
     <Compile Include="Models\Domain\Node.cs" />
+    <Compile Include="Models\Implementations\CharGer\Arrow.cs" />
+    <Compile Include="Models\Implementations\CharGer\Base.cs" />
+    <Compile Include="Models\Implementations\CharGer\Concept.cs" />
+    <Compile Include="Models\Implementations\CharGer\Graph.cs" />
+    <Compile Include="Models\Implementations\CharGer\Layout.cs" />
+    <Compile Include="Models\Implementations\CharGer\Relation.cs" />
+    <Compile Include="Models\Implementations\CharGer\Type.cs" />
     <Compile Include="Models\Implementations\Others\DbSettings.cs" />
+    <Compile Include="Models\Implementations\Tuples\LineVariantTuple.cs" />
+    <Compile Include="Services\JsonManager.cs" />
+    <Compile Include="Services\XmlManager.cs" />
     <Compile Include="Services\DataBaseManager.cs" />
     <Compile Include="Services\FileManager.cs" />
     <Compile Include="Services\SettingsManager.cs" />
@@ -323,12 +337,14 @@
     <Content Include="Content\Queries\GetLinksByDocumentId.sql" />
     <Content Include="Content\Queries\GetNodesByDocumentId.sql" />
     <Content Include="Content\Queries\GetDocumentById.sql" />
+    <Content Include="Content\Queries\InitTableNode.sql" />
+    <Content Include="Content\Queries\InitTableLink.sql" />
     <Content Include="Content\Queries\LinkSave.sql" />
     <Content Include="Content\Queries\NodeSave.sql" />
     <Content Include="Content\Queries\IsDocumentExists.sql" />
     <Content Include="Content\Queries\GetDocumentNames.sql" />
     <Content Include="Content\Queries\DocumentSave.sql" />
-    <Content Include="Content\Queries\InitTables.sql" />
+    <Content Include="Content\Queries\InitTableDocument.sql" />
     <Content Include="Content\Queries\InitDataBase.sql" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

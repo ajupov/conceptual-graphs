@@ -407,7 +407,7 @@ namespace Elan.Forms
             this.panel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel.Location = new System.Drawing.Point(0, 26);
             this.panel.Name = "panel";
-            this.panel.Size = new System.Drawing.Size(784, 230);
+            this.panel.Size = new System.Drawing.Size(784, 167);
             this.panel.TabIndex = 2;
             // 
             // designer
@@ -420,7 +420,7 @@ namespace Elan.Forms
             this.designer.BackColor = System.Drawing.SystemColors.Window;
             this.designer.Location = new System.Drawing.Point(220, 0);
             this.designer.Name = "designer";
-            this.designer.Size = new System.Drawing.Size(564, 230);
+            this.designer.Size = new System.Drawing.Size(564, 167);
             this.designer.TabIndex = 6;
             this.designer.MouseUp += new System.Windows.Forms.MouseEventHandler(this.DesignerMouseUp);
             // 
@@ -431,23 +431,24 @@ namespace Elan.Forms
             this.propertyGrid.LineColor = System.Drawing.SystemColors.ScrollBar;
             this.propertyGrid.Location = new System.Drawing.Point(0, 0);
             this.propertyGrid.Name = "propertyGrid";
-            this.propertyGrid.Size = new System.Drawing.Size(220, 230);
+            this.propertyGrid.Size = new System.Drawing.Size(220, 167);
             this.propertyGrid.TabIndex = 0;
             this.propertyGrid.ToolbarVisible = false;
             // 
             // openFileDialog
             // 
-            this.openFileDialog.Filter = "Граф Elan (*.json)|*.json|Все файлы (*.*)|*.*";
+            this.openFileDialog.Filter = "Граф Elan (*.json)|*.json|Граф Charger (*.cgx)|*.cgx|Граф Charger XML(*.xml)|*.xm" +
+    "l|Граф Charger XML(*.txt)|*.txt|Все файлы (*.*)|*.*";
             this.openFileDialog.RestoreDirectory = true;
             // 
             // saveFileDialog
             // 
-            this.saveFileDialog.Filter = "Граф Elan (*.json)|*.json|Все файлы (*.*)|*.*";
+            this.saveFileDialog.Filter = "Граф Elan (*.json)|*.json|Граф CharGer (*.cgx)|*.cgx|Все файлы (*.*)|*.*";
             // 
             // MainForm
             // 
             this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
-            this.ClientSize = new System.Drawing.Size(784, 256);
+            this.ClientSize = new System.Drawing.Size(784, 193);
             this.Controls.Add(this.panel);
             this.Controls.Add(this.toolBar);
             this.KeyPreview = true;

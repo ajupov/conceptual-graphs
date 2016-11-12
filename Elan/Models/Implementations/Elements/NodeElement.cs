@@ -3,7 +3,6 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
 using Elan.Models.Base;
-using Elan.Models.Implementations.Collections;
 
 namespace Elan.Models.Implementations.Elements
 {

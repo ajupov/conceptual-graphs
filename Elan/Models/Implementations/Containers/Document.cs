@@ -22,7 +22,7 @@ namespace Elan.Models.Implementations.Containers
     {
         #region Для БД
         [Browsable(false)]
-        public int Id { get; set; }
+        public long Id { get; set; }
 
         [DisplayName("Название")]
         public string Name { get; set; }
@@ -46,13 +46,11 @@ namespace Elan.Models.Implementations.Containers
 
         private bool _canFireEvents = true;
 
-        private CompositingQuality _compositingQuality = CompositingQuality.AssumeLinear;
+        private CompositingQuality _compositionQuality = CompositingQuality.AssumeLinear;
 
         private readonly ElementCollection _elements = new ElementCollection();
 
         private ElementType _elementType = ElementType.RectangleNode;
-
-        private Size _gridSize = new Size(50, 50);
 
         private LinkType _linkType = LinkType.RightAngle;
 
@@ -113,12 +111,12 @@ namespace Elan.Models.Implementations.Containers
         }
 
         [Browsable(false)]
-        public CompositingQuality CompositingQuality
+        public CompositingQuality CompositionQuality
         {
-            get { return _compositingQuality; }
+            get { return _compositionQuality; }
             set
             {
-                _compositingQuality = value;
+                _compositionQuality = value;
                 OnAppearancePropertyChanged(new EventArgs());
             }
         }
@@ -164,17 +162,6 @@ namespace Elan.Models.Implementations.Containers
             {
                 _linkType = value;
                 OnPropertyChanged(new EventArgs());
-            }
-        }
-
-        [Browsable(false)]
-        public Size GridSize
-        {
-            get { return _gridSize; }
-            set
-            {
-                _gridSize = value;
-                OnAppearancePropertyChanged(new EventArgs());
             }
         }
         #endregion
@@ -638,36 +625,6 @@ namespace Elan.Models.Implementations.Containers
                         ctrl = ((IControllable) link.Connector2).GetController();
                         ctrl.DrawSelection(graphics);
                     }
-                }
-            }
-        }
-
-        internal void DrawGrid(Graphics graphics, Rectangle clippingRegion)
-        {
-            using (var pen = new Pen(new HatchBrush(HatchStyle.LargeGrid | HatchStyle.Percent90,
-                Color.LightGray, Color.Transparent), 1))
-            {
-                var maxX = _location.X + Size.Width;
-                var maxY = _location.Y + Size.Height;
-
-                if (_windowSize.Width/_zoom > maxX)
-                {
-                    maxX = (int) (_windowSize.Width/_zoom);
-                }
-
-                if (_windowSize.Height/_zoom > maxY)
-                {
-                    maxY = (int) (_windowSize.Height/_zoom);
-                }
-
-                for (var i = 0; i < maxX; i += _gridSize.Width)
-                {
-                    graphics.DrawLine(pen, i, 0, i, maxY);
-                }
-
-                for (var i = 0; i < maxY; i += _gridSize.Height)
-                {
-                    graphics.DrawLine(pen, 0, i, maxX, i);
                 }
             }
         }

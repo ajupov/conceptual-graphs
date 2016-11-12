@@ -12,49 +12,49 @@ namespace Elan.Actions
     {
         private Point _center;
 
-        private BaseElement _siteLabelElement;
-
         private LabelEditDirection _direction;
 
         private LabelElement _labelElement;
 
         private TextBox _labelTextBox;
 
+        private BaseElement _siteLabelElement;
+
         public void StartEdit(BaseElement element, TextBox textBox)
         {
-            if (!(element is ILabelElement) || ((ILabelElement)element).Label.ReadOnly)
+            /*if (!(element is ILabelElement) || ((ILabelElement) element).Label.ReadOnly)
             {
                 return;
-            }
+            }*/
 
             _siteLabelElement = element;
-            _labelElement = ((ILabelElement) _siteLabelElement).Label;
+            _labelElement = ((ILabelElement)element).Label;
             _labelTextBox = textBox;
 
-            _direction = _siteLabelElement is BaseLinkElement ? LabelEditDirection.Both : LabelEditDirection.UpDown;
+            _direction = LabelEditDirection.Both;
 
-            SetTextBoxLocation(_siteLabelElement, _labelTextBox);
+            SetTextBoxLocation(element, _labelTextBox);
 
-            _labelTextBox.AutoSize = true;
+            /*_labelTextBox.AutoSize = true;*/
             _labelTextBox.Show();
-            _labelTextBox.Text = _labelElement.Text;
-            _labelTextBox.Font = _labelElement.Font;
-            _labelTextBox.WordWrap = _labelElement.Wrap;
+            _labelTextBox.Text = ((ILabelElement)element).Label.Text;
+            /* _labelTextBox.Font = _labelElement.Font;*/
+            /*_labelTextBox.WordWrap = _labelElement.Wrap;*/
 
-            _labelElement.Invalidate();
-
-            switch (_labelElement.Alignment)
-            {
-                case StringAlignment.Near:
-                    _labelTextBox.TextAlign = HorizontalAlignment.Left;
-                    break;
-                case StringAlignment.Center:
-                    _labelTextBox.TextAlign = HorizontalAlignment.Center;
-                    break;
-                case StringAlignment.Far:
-                    _labelTextBox.TextAlign = HorizontalAlignment.Right;
-                    break;
-            }
+            element.Invalidate();
+            _labelTextBox.TextAlign = HorizontalAlignment.Center;
+            //switch (_labelElement.Alignment)
+            //{
+            //    case StringAlignment.Near:
+            //        _labelTextBox.TextAlign = HorizontalAlignment.Left;
+            //        break;
+            //    case StringAlignment.Center:
+            //        _labelTextBox.TextAlign = HorizontalAlignment.Center;
+            //        break;
+            //    case StringAlignment.Far:
+            //        _labelTextBox.TextAlign = HorizontalAlignment.Right;
+            //        break;
+            //}
 
             _labelTextBox.KeyPress += LabelTextBoxKeyPress;
             _labelTextBox.Focus();
@@ -64,10 +64,10 @@ namespace Elan.Actions
 
         public void EndEdit()
         {
-            if (_siteLabelElement == null)
+           /* if (_siteLabelElement == null)
             {
                 return;
-            }
+            }*/
 
             _labelTextBox.KeyPress -= LabelTextBoxKeyPress;
 
@@ -93,20 +93,23 @@ namespace Elan.Actions
 
         public static void SetTextBoxLocation(BaseElement element, TextBox textBox)
         {
-            if (!(element is ILabelElement))
+           /* if (!(element is ILabelElement))
             {
                 return;
-            }
+            }*/
 
-            var label = ((ILabelElement) element).Label;
+            //var label = ((ILabelElement) element).Label;
 
             element.Invalidate();
-            label.Invalidate();
+            //label.Invalidate();
 
-            if (label.Text.Length > 0)
+            textBox.Location = element.Location;
+            textBox.Size = element.Size;
+
+            /*if (label.Text.Length > 0)
             {
-                textBox.Location = label.Location;
-                textBox.Size = label.Size;
+                textBox.Location = element.Location;
+                textBox.Size = element.Size;
             }
             else
             {
@@ -126,12 +129,12 @@ namespace Elan.Actions
                     textBox.Location = new Point(element.Location.X,
                         element.Location.Y + element.Size.Height/2 - sizeTmp.Height/2);
                 }
-            }
+            }*/
 
-            var rectangle = new Rectangle(textBox.Location, textBox.Size);
-            rectangle.Inflate(3, 3);
-            textBox.Location = rectangle.Location;
-            textBox.Size = rectangle.Size;
+           // var rectangle = new Rectangle(textBox.Location, textBox.Size);
+            //rectangle.Inflate(3, 3);
+            //textBox.Location = rectangle.Location;
+            //textBox.Size = rectangle.Size;
         }
 
         private Size MeasureTextSize()
@@ -141,7 +144,8 @@ namespace Elan.Actions
             switch (_direction)
             {
                 case LabelEditDirection.UpDown:
-                    sizeTmp = DiagramHelper.MeasureString(_labelTextBox.Text, _labelElement.Font, _labelTextBox.Size.Width,
+                    sizeTmp = DiagramHelper.MeasureString(_labelTextBox.Text, _labelElement.Font,
+                        _labelTextBox.Size.Width,
                         _labelElement.Format);
                     break;
                 case LabelEditDirection.Both:
@@ -158,7 +162,7 @@ namespace Elan.Actions
         {
             var sizeTmp = Size.Empty;
             var direction = element is BaseLinkElement ? LabelEditDirection.Both : LabelEditDirection.UpDown;
-            var labelElement = ((ILabelElement)element).Label;
+            var labelElement = ((ILabelElement) element).Label;
 
             switch (direction)
             {
@@ -178,27 +182,26 @@ namespace Elan.Actions
 
         private void LabelTextBoxKeyPress(object sender, KeyPressEventArgs e)
         {
-            if (_labelTextBox.Text.Length == 0)
+           /* if (_labelTextBox.Text.Length == 0)
             {
                 return;
-            }
+            }*/
 
             var size = _labelTextBox.Size;
-            var sizeTmp = MeasureTextSize();
+            //var sizeTmp = MeasureTextSize();
 
-            switch (_direction)
-            {
-                case LabelEditDirection.UpDown:
-                    size.Height = sizeTmp.Height;
-                    break;
-                case LabelEditDirection.Both:
-                    size = sizeTmp;
-                    break;
-            }
+            //switch (_direction)
+            //{
+            //    case LabelEditDirection.UpDown:
+            //        size.Height = sizeTmp.Height;
+            //        break;
+            //    case LabelEditDirection.Both:
+            //        size = sizeTmp;
+            //        break;
+            //}
 
             _labelTextBox.Size = size;
-
-            _labelTextBox.Location = new Point(_center.X - size.Width/2, _center.Y - size.Height/2);
+           // _labelTextBox.Location = new Point(_center.X - size.Width/2, _center.Y - size.Height/2);
         }
     }
 }

@@ -142,8 +142,14 @@
   <data name="InitDataBase" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>queries\initdatabase.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
   </data>
-  <data name="InitTables" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>queries\inittables.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  <data name="InitTableDocument" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>queries\inittabledocument.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  </data>
+  <data name="InitTableLink" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>queries\inittablelink.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  </data>
+  <data name="InitTableNode" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>queries\inittablenode.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
   </data>
   <data name="IsDocumentExists" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>queries\isdocumentexists.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
