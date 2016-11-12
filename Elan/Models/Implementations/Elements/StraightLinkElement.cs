@@ -98,7 +98,6 @@ namespace Elan.Models.Implementations.Elements
 
             needCalcLink = false;
         }
-
         IController IControllable.GetController()
         {
             return _controller ?? (_controller = new LineController(line1));

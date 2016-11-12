@@ -18,7 +18,7 @@ namespace Elan.Models.Base
         }
 
         [Browsable(false)]
-        public long Id { get; set; }
+        public int Id { get; set; }
 
         protected int borderWidth = 1;
 

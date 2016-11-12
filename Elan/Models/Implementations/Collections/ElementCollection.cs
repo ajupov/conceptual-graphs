@@ -152,11 +152,6 @@ namespace Elan.Models.Implementations.Collections
             return els;
         }
 
-        public List<BaseElement> GetList()
-        {
-            return new List<BaseElement>(GetArray());
-        }
-
         internal ElementCollection()
         {
         }

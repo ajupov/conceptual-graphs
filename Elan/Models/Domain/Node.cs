@@ -4,9 +4,9 @@ namespace Elan.Models.Domain
 {
     public class Node
     {
-        public long Id { get; set; }
+        public int Id { get; set; }
 
-        public long DocumentId { get; set; }
+        public int DocumentId { get; set; }
 
         public NodeType Type { get; set; }
 

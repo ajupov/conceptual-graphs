@@ -1,9 +1,7 @@
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.IO;
-using System.Linq;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Windows.Forms;
@@ -16,10 +14,8 @@ using Elan.Forms;
 using Elan.Helpers;
 using Elan.Models.Base;
 using Elan.Models.Contracts;
-using Elan.Models.Domain;
 using Elan.Models.Implementations.Elements;
 using Elan.Models.Implementations.Nodes;
-using Elan.Models.Implementations.Tuples;
 using Elan.Services;
 using Document = Elan.Models.Implementations.Containers.Document;
 using DomainDocument = Elan.Models.Domain.Document;
@@ -99,7 +95,6 @@ namespace Elan.UserControls
                 Invalidate(invalidateRec);
             }
         }
-
         private void RecreateEventsHandlers()
         {
             Document.PropertyChanged += DocumentPropertyChanged;
@@ -160,7 +155,7 @@ namespace Elan.UserControls
 
                 graphics.SmoothingMode = Document.SmoothingMode;
                 graphics.PixelOffsetMode = Document.PixelOffsetMode;
-                graphics.CompositingQuality = Document.CompositionQuality;
+                graphics.CompositingQuality = Document.CompositingQuality;
 
                 graphics.ScaleTransform(Document.Zoom, Document.Zoom);
 
@@ -213,6 +208,11 @@ namespace Elan.UserControls
             using (var matrix = graphics.Transform)
             {
                 var graphicsContainer = graphics.BeginContainer();
+
+                var clipRectangle = Gsc2Goc(e.ClipRectangle);
+
+                Document.DrawGrid(graphics, clipRectangle);
+
                 graphics.EndContainer(graphicsContainer);
                 graphics.Transform = matrix;
             }
@@ -753,19 +753,19 @@ namespace Elan.UserControls
 
         #region Open/Save File
 
-        public void SaveFile(string fileName, FileExtensionType type)
+        public void SaveFile(string fileName)
         {
-            FileManager.Save(fileName, Document.GetDocument(), type);
+            FileManager.Save(fileName, Document.GetDocument());
         }
 
-        public void OpenFile(string fileName, FileExtensionType type)
+        public void OpenFile(string fileName)
         {
-            var document = FileManager.Open(fileName, type);
+            var document = FileManager.Open(fileName);
             CreateDocument(document);
             RestartInitValues();
+            base.Invalidate();
             Document.SetCurrentId();
             RecreateEventsHandlers();
-            Invalidate();
         }
 
         public void SaveDb()
@@ -807,7 +807,7 @@ namespace Elan.UserControls
             }
 
             RestartInitValues();
-            Invalidate();
+            base.Invalidate();
         }
 
         public void CreateDocument(DomainDocument domainDocument)
@@ -848,8 +848,11 @@ namespace Elan.UserControls
 
             foreach (var link in domainDocument.Links)
             {
-                ConnectorElement startConnectorElement, endConnectorElement;
-                GetConnectors(link, out startConnectorElement, out endConnectorElement);
+                var startConnectorElement =
+                    (ConnectorElement) Document.FindElement(new Point(link.StartPointX, link.StartPointY));
+
+                var endConnectorElement =
+                    (ConnectorElement) Document.FindElement(new Point(link.EndPointX, link.EndPointY));
 
                 if (startConnectorElement != null && endConnectorElement != null)
                 {
@@ -869,41 +872,6 @@ namespace Elan.UserControls
 
             Document.SetCurrentId();
             RecreateEventsHandlers();
-        }
-
-        private void GetConnectors(Link link, out ConnectorElement startConnectorElement, out ConnectorElement endConnectorElement)
-        {
-            startConnectorElement = (ConnectorElement)Document.FindElement(new Point(link.StartPointX, link.StartPointY));
-            endConnectorElement = (ConnectorElement)Document.FindElement(new Point(link.EndPointX, link.EndPointY));
-
-            if (startConnectorElement == null || endConnectorElement == null)
-            {
-                var startNode = Document.Elements.GetArray().FirstOrDefault(n => n.Id == link.StartNodeId);
-                var endNode = Document.Elements.GetArray().FirstOrDefault(n => n.Id == link.EndNodeId);
-
-                if (startNode != null && endNode != null)
-                {
-                    var listTuples = new List<LineVariantTuple>();
-                    foreach (var connector1 in ((NodeElement)startNode).Connectors)
-                    {
-                        foreach (var connector2 in ((NodeElement)endNode).Connectors)
-                        {
-                            listTuples.Add(new LineVariantTuple
-                            {
-                                StartPoint = connector1.Location,
-                                EndPoint = connector2.Location
-                            });
-                        }
-                    }
-
-                    var minLengthLine = listTuples.OrderBy(l => l.Length).FirstOrDefault();
-                    if (minLengthLine != null)
-                    {
-                        startConnectorElement = (ConnectorElement)Document.FindElement(minLengthLine.StartPoint);
-                        endConnectorElement = (ConnectorElement)Document.FindElement(minLengthLine.EndPoint);
-                    }
-                }
-            }
         }
 
         #endregion

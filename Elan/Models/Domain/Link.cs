@@ -2,13 +2,13 @@
 {
     public class Link
     {
-        public long Id { get; set; }
+        public int Id { get; set; }
 
-        public long DocumentId { get; set; }
+        public int DocumentId { get; set; }
 
-        public long StartNodeId { get; set; }
+        public int StartNodeId { get; set; }
 
-        public long EndNodeId { get; set; }
+        public int EndNodeId { get; set; }
 
         public string Label { get; set; }
 

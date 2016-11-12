@@ -17,9 +17,7 @@ namespace Elan.Services
             using (var connection = new SqlConnection(connectionString))
             {
                 connection.Execute(Queries.InitDataBase);
-                connection.Execute(Queries.InitTableDocument);
-                connection.Execute(Queries.InitTableNode);
-                connection.Execute(Queries.InitTableLink);
+                connection.Execute(Queries.InitTables);
             }
             SettingsManager.ReplaceDefaultDbName();
         }

@@ -1,0 +1,6 @@
+C:\Projects\Diagram.NET\Control\bin\Debug\Dalssoft.DiagramNet.dll
+C:\Projects\Diagram.NET\Control\bin\Debug\Dalssoft.DiagramNet.pdb
+C:\Projects\Diagram.NET\Control\obj\Debug\Cge.DiagramNet.Designer.resources
+C:\Projects\Diagram.NET\Control\obj\Debug\Cge.csproj.GenerateResource.Cache
+C:\Projects\Diagram.NET\Control\obj\Debug\Dalssoft.DiagramNet.dll
+C:\Projects\Diagram.NET\Control\obj\Debug\Dalssoft.DiagramNet.pdb

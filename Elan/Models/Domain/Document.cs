@@ -4,13 +4,7 @@ namespace Elan.Models.Domain
 {
     public class Document
     {
-        public Document()
-        {
-            Nodes = new List<Node>();
-            Links = new List<Link>();
-        }
-
-        public long Id { get; set; }
+        public int Id { get; set; }
 
         public string Name { get; set; }
 

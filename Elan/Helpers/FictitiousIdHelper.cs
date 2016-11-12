@@ -5,9 +5,9 @@ namespace Elan.Helpers
 {
     public static class FictitiousIdHelper
     {
-        private static long _currentId;
+        private static volatile int _currentId;
 
-        public static long NextId => ++_currentId;
+        public static int NextId => ++_currentId;
 
         public static void SetCurrentId(this Document document)
         {
