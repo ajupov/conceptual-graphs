@@ -88,14 +88,10 @@ namespace Elan.Content {
         ///		where Name = @Name)
         ///	) begin
         ///insert into dbo.Document
-        ///	values(@Name, @Width, @Height);
+        ///	values(@Name);
         ///	select scope_identity();
         ///end
         ///else begin
-        ///	update dbo.Document
-        ///		set Width = @Width,
-        ///			Height = @Height
-        ///		where Name = @Name;
         ///	select Id from dbo.Document where Name = @Name;
         ///end;.
         /// </summary>
@@ -108,9 +104,7 @@ namespace Elan.Content {
         /// <summary>
         ///   Ищет локализованную строку, похожую на select
         ///	Id,
-        ///	Name,
-        ///	Width,
-        ///	Height
+        ///	Name
         ///	from dbo.Document
         ///	where Id = @id.
         /// </summary>
@@ -190,7 +184,6 @@ namespace Elan.Content {
         
         /// <summary>
         ///   Ищет локализованную строку, похожую на use elan;
-        ///
         ///if (not exists (
         ///	select
         ///		TABLE_NAME
@@ -201,13 +194,47 @@ namespace Elan.Content {
         ///	create table dbo.Document
         ///	(
         ///		Id		int identity (1, 1) not null,
-        ///		Name	nvarchar(max) not null,
-        ///		Width	int not null,
-        ///		Height	int not null
+        ///		Name	nvarchar(max) not null
         ///	);
-        ///end;
-        ///go
-        ///
+        ///end;.
+        /// </summary>
+        internal static string InitTableDocument {
+            get {
+                return ResourceManager.GetString("InitTableDocument", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на use elan;
+        ///if (not exists (
+        ///	select
+        ///		TABLE_NAME
+        ///        from information_schema.tables 
+        ///        where TABLE_SCHEMA = &apos;dbo&apos; 
+        ///			and TABLE_NAME = &apos;Link&apos;))
+        ///begin
+        ///	create table dbo.Link
+        ///	(
+        ///		Id			int not null,
+        ///		DocumentId	int not null,
+        ///		StartNodeId	int not null,
+        ///		EndNodeId	int not null,
+        ///		Label		nvarchar(max) not null,
+        ///		StartPointX	int not null,
+        ///		StartPointY	int not null,
+        ///		EndPointX	int not null,
+        ///		EndPointY	int not null
+        ///	);
+        ///end;.
+        /// </summary>
+        internal static string InitTableLink {
+            get {
+                return ResourceManager.GetString("InitTableLink", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на use elan;
         ///if (not exists (
         ///	select
         ///		TABLE_NAME
@@ -215,11 +242,22 @@ namespace Elan.Content {
         ///        where TABLE_SCHEMA = &apos;dbo&apos; 
         ///			and TABLE_NAME = &apos;Node&apos;))
         ///begin
-        ///	create table dbo.N [остаток строки не уместился]&quot;;.
+        ///	create table dbo.Node
+        ///	(
+        ///		Id			int not null,
+        ///		DocumentId	int not null,
+        ///		Type		int not null,
+        ///		Label		nvarchar(max) not null,
+        ///		X			int not null,
+        ///		Y			int not null,
+        ///		Width		int not null,
+        ///		Height		int not null
+        ///	);
+        ///end;.
         /// </summary>
-        internal static string InitTables {
+        internal static string InitTableNode {
             get {
-                return ResourceManager.GetString("InitTables", resourceCulture);
+                return ResourceManager.GetString("InitTableNode", resourceCulture);
             }
         }
         

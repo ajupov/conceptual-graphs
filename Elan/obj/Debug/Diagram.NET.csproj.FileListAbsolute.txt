@@ -1,7 +1,0 @@
-C:\Projects\Diagram.NET\Control\bin\Debug\Dalssoft.DiagramNet.dll
-C:\Projects\Diagram.NET\Control\bin\Debug\Dalssoft.DiagramNet.pdb
-C:\Projects\Diagram.NET\Control\obj\Debug\Diagram.NET.csprojResolveAssemblyReference.cache
-C:\Projects\Diagram.NET\Control\obj\Debug\Diagram.NET.csproj.GenerateResource.Cache
-C:\Projects\Diagram.NET\Control\obj\Debug\Dalssoft.DiagramNet.dll
-C:\Projects\Diagram.NET\Control\obj\Debug\Dalssoft.DiagramNet.pdb
-C:\Projects\Diagram.NET\Control\obj\Debug\Cge.DiagramNet.Designer.resources

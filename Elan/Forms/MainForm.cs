@@ -21,25 +21,28 @@ namespace Elan.Forms
         {
             if (openFileDialog.ShowDialog(this) == DialogResult.OK)
             {
-                designer.OpenFile(openFileDialog.FileName);
+                designer.OpenFile(openFileDialog.FileName, (FileExtensionType)openFileDialog.FilterIndex);
                 CurrentFileName = openFileDialog.FileName;
             }
         }
+
         private void SaveFileMenuItemClick(object sender, EventArgs e)
         {
             if (!string.IsNullOrEmpty(CurrentFileName))
             {
-                designer.SaveFile(CurrentFileName);
+                designer.SaveFile(CurrentFileName, (FileExtensionType)openFileDialog.FilterIndex);
             }
             else
             {
                 SaveToFileAs();
             }
         }
+
         private void SaveFileAsMenuItemClick(object sender, EventArgs e)
         {
             SaveToFileAs();
         }
+
         //Бд
         private void OpenDbMenuItemClick(object sender, EventArgs e)
         {
@@ -315,7 +318,7 @@ namespace Elan.Forms
             if (saveFileDialog.ShowDialog(this) == DialogResult.OK)
             {
                 CurrentFileName = saveFileDialog.FileName;
-                designer.SaveFile(CurrentFileName);
+                designer.SaveFile(CurrentFileName, (FileExtensionType)saveFileDialog.FilterIndex);
             }
         }
         #endregion
@@ -371,5 +374,11 @@ namespace Elan.Forms
             }
         }
         #endregion
+
+        private void TableViewMenuItemClick(object sender, EventArgs e)
+        {
+            var form = new TableViewForm(designer.Document.GetDocument());
+            form.ShowDialog();
+        }
     }
 }
