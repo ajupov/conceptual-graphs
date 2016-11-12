@@ -13,3 +13,4 @@ C:\Projects\Elan\Elan\obj\Release\Elan.Forms.MainForm.resources
 C:\Projects\Elan\Elan\obj\Release\Elan.UserControls.Designer.resources
 C:\Projects\Elan\Elan\obj\Release\Elan.csproj.GenerateResource.Cache
 C:\Projects\Elan\Elan\obj\Release\Elan.exe
+C:\Projects\Elan\Elan\obj\Release\Elan.Forms.TableViewForm.resources
